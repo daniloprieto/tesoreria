@@ -24,7 +24,8 @@ export class DashboardLiveComponent implements OnInit {
     amount: new FormControl(0,[Validators.required]),
   });
 
-  public selectedDate = new FormControl('');
+  public selectedDate = new FormControl(this.dNow);
+  public isDigital = new FormControl(false);
 
   constructor(
     private _auth: AuthService,
@@ -34,7 +35,7 @@ export class DashboardLiveComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this._auth.user.subscribe((user:User) => this.user = user)
+    this._auth.user.subscribe((user: User) => this.user = user)
   }
 
   setTicket(event: any) {
@@ -53,7 +54,7 @@ export class DashboardLiveComponent implements OnInit {
         lastName,
         amount: Number((document.getElementById('diezmo') as HTMLInputElement).value),
         type: 'tithe',
-        digital: 0,
+        digital: this.isDigital.value ? 1 : 0,
         treasurer: this.user.id
       };
 
@@ -74,7 +75,7 @@ export class DashboardLiveComponent implements OnInit {
         lastName: (document.getElementById('lastname') as HTMLInputElement).value,
         amount: Number((document.getElementById('ofrenda') as HTMLInputElement).value),
         type: 'offering',
-        digital: 0,
+        digital: this.isDigital.value ? 1 : 0,
         treasurer: this.user.id
       };
 

@@ -18,3 +18,9 @@ body{
   width: 30vw;
   margin: 20vh auto;
 }
+
+@media (max-width: 600px) {
+  .custom-modal{
+    width: 320px;
+  }
+}
