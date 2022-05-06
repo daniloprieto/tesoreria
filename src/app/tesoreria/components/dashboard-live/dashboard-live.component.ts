@@ -6,6 +6,7 @@ import { TicketBase } from '../../../core/models/ticket.model';
 import { AlertService } from '../../../core/services/alert.service';
 import { environment } from 'src/environments/environment';
 import { PrintService } from '../../../core/services/print.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard-live',
@@ -15,8 +16,13 @@ import { PrintService } from '../../../core/services/print.service';
 export class DashboardLiveComponent implements OnInit {
 
   public user!: User;
-  public d = (new Date());
-  public date = this.d.getDate() + " - " + (this.d.getMonth() + 1) + " - " + this.d.getFullYear();
+  public date = new Date().toLocaleDateString();
+  public financialForm = new FormGroup({
+    name: new FormControl('',[Validators.required]),
+    lastName: new FormControl('',[Validators.required]),
+    tithe: new FormControl(0),
+    offering: new FormControl(0)
+  });
 
   constructor(
     private _auth: AuthService,
@@ -58,20 +64,25 @@ export class DashboardLiveComponent implements OnInit {
 
   saveTicket(ticket:TicketBase) {
 
-    console.log('entro a saveOrder')
-
     this._ticket.generateTicket(ticket)
-      .then((res) => { if (this._print.printTicket(ticket)) this.reset() })
-      .catch((error) => this._alert.showAlert('Error al guardar el Ticket'));
+      .then(res=>res.json())
+      .then((res: any) => {
+        console.log('new id',res)
+        if (this._print.printTicket(ticket, res.id)) this.reset()
+      })
+      .catch((error) => {
+        this._alert.showAlert('Error al guardar el Ticket');
+        console.error(error);
+      });
   }
 
 
-  retrieveOrders(event:any, date: any = this.d) {
+  retrieveOrders(event: any, date: any = this.date) {
     event.preventDefault();
 
-    let utc = new Date(this.d).toJSON().slice(0,10).replace(/-/g,'/');
+    let utc = new Date(date).toJSON().slice(0, 10);
 
-    let data = { date:utc };
+    let data = { date: utc };
 
     const dataClear = JSON.stringify(data);
 
@@ -79,22 +90,25 @@ export class DashboardLiveComponent implements OnInit {
       method: "POST",
       body: dataClear,
     })
-    .then(response=>response.json())
-    .then(tickets => {
+      .then(response => response.json())
+      .then(tickets => {
 
-      console.log(tickets)
+        console.log(tickets)
 
-      if (tickets.length > 0) {
+        if (tickets.length > 0) {
 
-        if (this._print.printReport(tickets, date)) this.reset();
+          if (this._print.printReport(tickets, date)) this.reset();
 
-      } else {
+        } else {
 
-        this._alert.showAlert('No hay datos para imprimir')
+          this._alert.showAlert('No hay datos para imprimir')
 
-      }
-    })
-    .catch((error) => this._alert.showAlert('No hay datos para imprimir'));
+        }
+      })
+      .catch((error) => {
+        this._alert.showAlert('No hay datos para imprimir');
+        console.error(error);
+      });
 
   }
 

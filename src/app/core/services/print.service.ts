@@ -37,21 +37,20 @@ export class PrintService {
 
   user!: User;
 
-  constructor(private _auth: AuthService) { }
-
-  ngOnInit(): void {
+  constructor(private _auth: AuthService) {
     this._auth.user.subscribe((user: User) => this.user = user);
   }
 
-  printTicket(ticket:TicketBase) {
+  printTicket(ticket: TicketBase, id: number) {
+
+    console.log(id,ticket);
 
     let diezmoMessage = ticket.tithe > 0 ? `$ ${ticket.tithe} (pesos) <br> en caracter de diezmo` : '';
     let ofrendaMessage = ticket.offering > 0 ? `$ ${ticket.offering} (pesos) <br> en caracter de ofrenda` : '';
 
-    var view = window.open('', 'PRINT', 'height=400,width=600')!;
-
-    const leafDesign = [
+    let leafDesign = [
       '<html lang="es"><body style="font-family: monospace, monospace !important;font-size:12px">',
+      '<span style="font-size:10px">Ticket Nº:' + id + '</span><br>',
       '<div style="width:250px">',
       '<h5>Iglesia Centro de Adoración Gilgal</h5>',
       '<span>Recibimos del sr/a: <br>' + ticket.name + ' ' + ticket.lastName + '</span><br>',
@@ -66,9 +65,11 @@ export class PrintService {
       '</body></html>'
     ];
 
-    leafDesign.map((line:string) => view.document.write(line))
+    let view = window.open('', 'PRINT', 'height=400,width=600')!;
 
-    view.document.close();
+    leafDesign.map((line) => view.document.write(line));
+
+    //view.document.close();
     view.focus();
     view.print();
     view.close();
