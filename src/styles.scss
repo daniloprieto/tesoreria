@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Overpass:wght@400;700&display=swap');
+
+
+body{
+  width: 100%;
+  height: 100vh;
+  background-color: hsl(216, 12%, 8%)!important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-modal{
+  background: white;
+  border-radius:20px;
+  opacity: 0.9;
+  padding: 3em;
+  width: 320px !important;
+  margin: 20vh auto;  
+}
