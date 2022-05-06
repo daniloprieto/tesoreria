@@ -82,20 +82,28 @@ export class PrintService {
     let total = 0;
 
     let model = [
-      '<html><body>',
+      '<html><body style="font-family: monospace, monospace !important;font-size:12px !important">',
       '<div style="width:250px">',
       '<h5>Iglesia Centro de Adoración Gilgal</h5><br>',
       '<span>Reporte ' + date + '</span><br><br>',
-      '<table><tr><th>Nombre</th><th>Diezmo</th><th>Ofrenda</th><th>Tesorero</th></tr>'
+      '<table><tr style="font-family: monospace, monospace !important;font-size:12px !important">',
+      '<th style="border: 0.5px solid black">Ticket</th>',
+      '<th style="border: 0.5px solid black">Nombre</th>',
+      '<th style="border: 0.5px solid black">Diezmo</th>',
+      '<th style="border: 0.5px solid black">Ofrenda</th>',
+      '<th style="border: 0.5px solid black">Tesorero</th></tr>'
     ];
 
     let view = window.open('', 'PRINT', 'height=400,width=600')!;
 
     model.map((line) => view.document.write(line));
 
+    tickets.map((ticket: Ticket) => {})
+
     tickets.map((ticket:Ticket) => {
-      view.document.write('<tr>')
-      view.document.write('<td>' + ticket.name + ' ' + ticket.lastName + '</td>');
+      view.document.write('<tr style="font-family: monospace, monospace !important;font-size:12px !important">')
+      view.document.write('<td>' + ticket.id + '</td>');
+      view.document.write('<td>' + ticket.name.slice(0,1) + '. ' + ticket.lastName + '</td>');
       view.document.write('<td>' + Number(ticket.tithe) + '</td>');
       view.document.write('<td>' + Number(ticket.offering) + '</td>');
       view.document.write('<td>' + ticket.treasurer + '</td>');
@@ -110,10 +118,11 @@ export class PrintService {
     total = totalDiezmos + totalOfrendas;
 
     let modelTwo = [
-      '<table><tr><th>Diezmos</th><th>Ofrendas</th><th>Total</th></tr>',
-      '<td>' + totalDiezmos + '</td>',
-      '<td>' + totalOfrendas + '</td>',
-      '<td>$' + total + '</td>',
+      '<table><tr style="font-family: monospace, monospace !important;font-size:12px !important">',
+      '<th>Diezmos</th><th>Ofrendas</th><th>Total</th></tr>',
+      '<td style="font-family: monospace, monospace !important;font-size:12px !important">' + totalDiezmos + '</td>',
+      '<td style="font-family: monospace, monospace !important;font-size:12px !important">' + totalOfrendas + '</td>',
+      '<td style="font-family: monospace, monospace !important;font-size:12px !important">$' + total + '</td>',
       '</table>',
       '<br><br><br>',
       '<span> Revisor de cuentas</span>',
