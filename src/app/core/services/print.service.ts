@@ -41,19 +41,40 @@ export class PrintService {
     this._auth.user.subscribe((user: User) => this.user = user);
   }
 
-  printTicket(ticket: TicketBase, id: number) {
+  printTicket(tickets: TicketBase[]) {
 
-    console.log(id,ticket);
+    console.log(tickets);
 
-    let diezmoMessage = ticket.tithe > 0 ? `$ ${ticket.tithe} (pesos) <br> en caracter de diezmo` : '';
-    let ofrendaMessage = ticket.offering > 0 ? `$ ${ticket.offering} (pesos) <br> en caracter de ofrenda` : '';
+    let ids: number[] = [];
+    let info = {
+      name: '',
+      lastName: '',
+      titheAmount: 0,
+      offeringAmount: 0,
+      digital: 0
+    };
+
+    tickets.map((ticket) => {
+      if (ticket.type === 'tithe') info.titheAmount = ticket.amount;
+      if (ticket.type === 'offering') info.offeringAmount = ticket.amount;
+      ids.push(ticket.id!);
+      info.name = ticket.name;
+      info.lastName = ticket.lastName;
+      if (ticket.digital > 0) info.digital = ticket.digital;
+    })
+
+    let diezmoMessage = info.titheAmount > 0 ? `$ ${info.titheAmount} (pesos) <br> en caracter de diezmo` : '';
+    let ofrendaMessage = info.offeringAmount > 0 ? `$ ${info.offeringAmount} (pesos) <br> en caracter de ofrenda` : '';
+
+    let controlLine = '<span style="font-size:10px">Ticket Nº:' + ids + ' ';
+    let controlData = info.digital > 0 ? controlLine + 'Digital' : controlLine + 'Efectivo';
 
     let leafDesign = [
       '<html lang="es"><body style="font-family: monospace, monospace !important;font-size:12px">',
-      '<span style="font-size:10px">Ticket Nº:' + id + '</span><br>',
+      controlData,
       '<div style="width:250px">',
       '<h5>Iglesia Centro de Adoración Gilgal</h5>',
-      '<span>Recibimos del sr/a: <br>' + ticket.name + ' ' + ticket.lastName + '</span><br>',
+      '<span>Recibimos del sr/a: <br>' + info.name + ' ' + info.lastName + '</span><br>',
       '<span>la suma de: </span><br>',
       '<span>' + diezmoMessage + '</span><br>',
       '<span>' + ofrendaMessage + '</span><br>',
@@ -76,66 +97,166 @@ export class PrintService {
     return true;
   }
 
-  printReport(tickets:Ticket[], date: string) {
-    let totalDiezmos = 0;
-    let totalOfrendas = 0;
+  printReport(tickets: Ticket[], date: string) {
+
+    let totalTithesCash = 0;
+    let totalOfferingsCash = 0;
+    let totalCash = 0;
+
+    let totalTithesDigital = 0;
+    let totalOfferingsDigital = 0;
+    let totalDigital = 0;
+
     let total = 0;
 
-    let model = [
-      '<html><body style="font-family: monospace, monospace !important;font-size:12px !important">',
-      '<div style="width:250px">',
-      '<h5>Iglesia Centro de Adoración Gilgal</h5><br>',
-      '<span>Reporte ' + date + '</span><br><br>',
-      '<table><tr style="font-family: monospace, monospace !important;font-size:12px !important">',
-      '<th style="border: 0.5px solid black">Ticket</th>',
-      '<th style="border: 0.5px solid black">Nombre</th>',
-      '<th style="border: 0.5px solid black">Diezmo</th>',
-      '<th style="border: 0.5px solid black">Ofrenda</th>',
-      '<th style="border: 0.5px solid black">Tesorero</th></tr>'
-    ];
+    return separateTicketsForType(tickets);
 
-    let view = window.open('', 'PRINT', 'height=400,width=600')!;
+    function separateTicketsForType(tickets: Ticket[]){
 
-    model.map((line) => view.document.write(line));
+      let tithes: Ticket[] = [];
+      let offerings: Ticket[] = [];
 
-    tickets.map((ticket: Ticket) => {})
+      tickets.map((ticket: Ticket) => {
+        switch (ticket.type) {
+          case 'tithe':
+            tithes.push(ticket);
+            break;
+          case 'offering':
+            offerings.push(ticket);
+            break;
+        }
+      });
 
-    tickets.map((ticket:Ticket) => {
-      view.document.write('<tr style="font-family: monospace, monospace !important;font-size:12px !important">')
-      view.document.write('<td>' + ticket.id + '</td>');
-      view.document.write('<td>' + ticket.name.slice(0,1) + '. ' + ticket.lastName + '</td>');
-      view.document.write('<td>' + Number(ticket.tithe) + '</td>');
-      view.document.write('<td>' + Number(ticket.offering) + '</td>');
-      view.document.write('<td>' + ticket.treasurer + '</td>');
-      view.document.write('</tr>');
+      let tableTithes = tithes.length > 0 ? createTable('tithe', tithes) : [];
+      let tableOfferings = offerings.length > 0 ? createTable('offering', offerings) : [];
 
-      totalDiezmos += Number(ticket.tithe);
-      totalOfrendas += Number(ticket.offering);
-    })
+      return showDesign(tableTithes, tableOfferings);
 
-    view.document.write('</table><br>');
+    }
 
-    total = totalDiezmos + totalOfrendas;
+    function createTable(type: string, tickets: Ticket[]) {
 
-    let modelTwo = [
-      '<table><tr style="font-family: monospace, monospace !important;font-size:12px !important">',
-      '<th>Diezmos</th><th>Ofrendas</th><th>Total</th></tr>',
-      '<td style="font-family: monospace, monospace !important;font-size:12px !important">' + totalDiezmos + '</td>',
-      '<td style="font-family: monospace, monospace !important;font-size:12px !important">' + totalOfrendas + '</td>',
-      '<td style="font-family: monospace, monospace !important;font-size:12px !important">$' + total + '</td>',
-      '</table>',
-      '<br><br><br>',
-      '<span> Revisor de cuentas</span>',
-      '</div>',
-      '</body></html>'
-    ];
+      let selected = type === 'tithe' ? 'Diezmos' : 'Ofrendas';
 
-    modelTwo.map((line) => view.document.write(line));
+      let table = [
+        '<table><tr style="font-family: monospace, monospace !important;font-size:12px !important">',
+        '<th style="border: 0.5px solid black">Nº</th>',
+        '<th style="border: 0.5px solid black">T</th>',
+        '<th style="border: 0.5px solid black">Nombre</th>',
+        '<th style="border: 0.5px solid black">' + selected + '</th>',
+        '<th style="border: 0.5px solid black">Tesorero</th></tr>'
+      ];
 
-    view.focus();
-    view.print();
-    view.close();
-    return true;
+      tickets.map((ticket) => {
+        createRow(ticket).map((line) => table.push(line))
+        calculateTotals(type, ticket.digital, ticket.amount);
+      });
+
+      table.push('</table><br>');
+
+      return table;
+
+    }
+
+    function createRow(ticket:Ticket): string[]{
+      let digital = ticket.digital > 0 ? 'D' : 'E';
+      let name = ticket.name.slice(0, 1) + '. ' + (ticket.lastName.length > 6 ? (ticket.lastName.slice(0,5) + '.' ): ticket.lastName);
+
+      let rowDesign = [
+        '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
+        '<td>' + ticket.id + '</td>',
+        '<td>' + digital + '</td>',
+        '<td>' + name + '</td>',
+        '<td style="text-align:right">$' + ticket.amount + '</td>',
+        '<td>' + ticket.treasurer + '</td>',
+        '</tr>'
+      ];
+
+      return rowDesign;
+
+    }
+
+    function showDesign(tableTithes: string[], tableOfferings: string[]) {
+      let dNow = new Date(date);
+      let dateLocal = dNow.getDate()  + '/' + (dNow.getMonth() + 1) + '/' + dNow.getFullYear();
+
+
+      let model = [
+        '<html><body style="font-family: monospace, monospace !important;font-size:12px !important">',
+        '<div style="width:250px">',
+        '<h5>Iglesia Centro de Adoración Gilgal</h5><br>',
+        '<span>Reporte ' + dateLocal + '</span><br><br>',
+      ];
+
+      let view = window.open('', 'PRINT', 'height=400,width=600')!;
+
+      model.map((line) => view.document.write(line));
+      tableTithes.map((line) => view.document.write(line));
+      tableOfferings.map((line) => view.document.write(line));
+
+
+      let tableTotals = [
+        '<table style="max-width:280px">',
+        '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
+        '<th style="border: 0.5px solid black">(Totales)</th>',
+        '<th style="border: 0.5px solid black">Efectivo</th>',
+        '<th style="border: 0.5px solid black">Digital</th>',
+        '<th style="border: 0.5px solid black">Total</th>',
+        '</tr>',
+        '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
+        '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">Diezmos</td>',
+        '<td style="text-align:right">$' + totalTithesCash + '</td>',
+        '<td style="text-align:right">$' + totalTithesDigital + '</td>',
+        '<td style="text-align:right"><strong>$' + (totalTithesCash + totalTithesDigital) + '</strong></td>',
+        '</tr>',
+        '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
+        '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">Ofrendas</td>',
+        '<td style="text-align:right">$' + totalOfferingsCash + '</td>',
+        '<td style="text-align:right">$' + totalOfferingsDigital + '</td>',
+        '<td style="text-align:right"><strong>$' + (totalOfferingsCash + totalOfferingsDigital) + '</strong></td>',
+        '</tr>',
+        '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
+        '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">Total</td>',
+        '<td style="text-align:right">$' + totalCash + '</td>',
+        '<td style="text-align:right">$' + totalDigital + '</td>',
+        '<td style="text-align:right"><strong>$' + (totalCash + totalDigital) + '</strong></td>',
+        '</tr>',
+        '</table>',
+        '<br><br><br>',
+        '<span> Revisor de cuentas</span>',
+        '</div>',
+        '</body></html>'
+      ];
+
+      tableTotals.map((line) => view.document.write(line));
+
+      view.focus();
+      view.print();
+      view.close();
+      return true;
+
+    }
+
+    function calculateTotals(type: string, digital: number, amount: number) {
+
+      switch (type) {
+        case 'tithe':
+          digital > 0
+            ? totalTithesDigital += Number(amount)
+            : totalTithesCash += Number(amount);
+          break;
+        case 'offering':
+          digital > 0
+          ? totalOfferingsDigital += Number(amount)
+          : totalOfferingsCash += Number(amount);
+          break;
+      }
+
+      totalCash = totalTithesCash + totalOfferingsCash;
+      totalDigital = totalTithesDigital + totalOfferingsDigital;
+      total = totalCash + totalDigital;
+
+    }
 
   }
 }

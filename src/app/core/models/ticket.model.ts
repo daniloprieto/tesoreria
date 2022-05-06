@@ -1,12 +1,13 @@
 export interface TicketBase{
+  id?: number,
   name: string,
   lastName: string,
-  tithe: number,
-  offering: number,
+  amount: number,
+  type: string,
+  digital: number,
   treasurer: string | number
 }
 export interface Ticket extends TicketBase{
-  id: number,
   status: number,
   createdAt: string,
   updatedAt: string,

@@ -27,7 +27,6 @@ export class AuthService {
     })
     .then(response=>response.json())
     .then((user:User) => {
-      console.log('user', user)
       if (user) {
         this.user.next(user);
         this._router.navigate(['']);

@@ -16,13 +16,15 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 export class DashboardLiveComponent implements OnInit {
 
   public user!: User;
-  public date = new Date().toLocaleDateString();
+  public dNow = new Date();
+  public dateARG = this.dNow.getDate()  + '/' + (this.dNow.getMonth() + 1) + '/' + this.dNow.getFullYear()
   public financialForm = new FormGroup({
     name: new FormControl('',[Validators.required]),
-    lastName: new FormControl('',[Validators.required]),
-    tithe: new FormControl(0),
-    offering: new FormControl(0)
+    lastName: new FormControl('', [Validators.required]),
+    amount: new FormControl(0,[Validators.required]),
   });
+
+  public selectedDate = new FormControl('');
 
   constructor(
     private _auth: AuthService,
@@ -35,49 +37,86 @@ export class DashboardLiveComponent implements OnInit {
     this._auth.user.subscribe((user:User) => this.user = user)
   }
 
-  setMessage(event:any) {
+  setTicket(event: any) {
     event.preventDefault();
 
-    let ticket: TicketBase = {
-      name: (document.getElementById('name') as HTMLInputElement).value,
-      lastName: (document.getElementById('lastname') as HTMLInputElement).value,
-      tithe: Number((document.getElementById('diezmo') as HTMLInputElement).value),
-      offering: Number((document.getElementById('ofrenda') as HTMLInputElement).value),
-      treasurer: this.user.id
-    };
+    let n = (document.getElementById('name') as HTMLInputElement).value;
+    let l = (document.getElementById('lastname') as HTMLInputElement).value;
+    let name = n.charAt(0).toUpperCase() + (n.slice(1)).toLowerCase();
+    let lastName = l.charAt(0).toUpperCase() + (l.slice(1)).toLowerCase();
 
-    ticket.name = ticket.name.charAt(0).toUpperCase() + (ticket.name.slice(1)).toLowerCase();
-    ticket.lastName = ticket.lastName.charAt(0).toUpperCase() + (ticket.lastName.slice(1)).toLowerCase();
+    let tickets: TicketBase[] = [];
 
+    if (Number((document.getElementById('diezmo') as HTMLInputElement).value) > 0) {
+      let ticket: TicketBase = {
+        name,
+        lastName,
+        amount: Number((document.getElementById('diezmo') as HTMLInputElement).value),
+        type: 'tithe',
+        digital: 0,
+        treasurer: this.user.id
+      };
 
-    if (ticket.name.length > 0 && ticket.lastName.length > 0) {
-      if (ticket.tithe > 0 || ticket.offering > 0) {
-        this.saveTicket(ticket);
-        } else {
-          this._alert.showAlert('Debe ingresar al menos un valor');
-        }
-    } else {
-      this._alert.showAlert('Debe ingresar nombre y apellido');
+      if (ticket.name.length > 0 && ticket.lastName.length > 0) {
+        if (ticket.amount > 0) {
+          tickets.push(ticket);
+          } else {
+            this._alert.showAlert('Debe ingresar al menos un valor');
+          }
+      } else {
+        this._alert.showAlert('Debe ingresar nombre y apellido');
+      }
     }
+
+    if (Number((document.getElementById('ofrenda') as HTMLInputElement).value) > 0) {
+      let ticket: TicketBase = {
+        name: (document.getElementById('name') as HTMLInputElement).value,
+        lastName: (document.getElementById('lastname') as HTMLInputElement).value,
+        amount: Number((document.getElementById('ofrenda') as HTMLInputElement).value),
+        type: 'offering',
+        digital: 0,
+        treasurer: this.user.id
+      };
+
+      if (ticket.name.length > 0 && ticket.lastName.length > 0) {
+        if (ticket.amount > 0) {
+          tickets.push(ticket);
+          } else {
+            this._alert.showAlert('Debe ingresar al menos un valor');
+          }
+      } else {
+        this._alert.showAlert('Debe ingresar nombre y apellido');
+      }
+    }
+
+    if(tickets.length > 0) this.saveTicket(tickets);
 
   }
 
-  saveTicket(ticket:TicketBase) {
+  saveTicket(tickets: TicketBase[]) {
 
-    this._ticket.generateTicket(ticket)
+    let savedTickets: TicketBase[] = [];
+
+    tickets.map((ticket, index) => {
+      this._ticket.generateTicket(ticket)
       .then(res=>res.json())
       .then((res: any) => {
-        console.log('new id',res)
-        if (this._print.printTicket(ticket, res.id)) this.reset()
+        console.log('new id', res)
+        ticket.id = res.id;
+        savedTickets.push(ticket);
+        if ((index + 1) === tickets.length) {
+          if (this._print.printTicket(savedTickets)) this.reset();
+        }
       })
       .catch((error) => {
         this._alert.showAlert('Error al guardar el Ticket');
         console.error(error);
       });
+    })
+
   }
 
-
-  retrieveOrders(event: any, date: any = this.date) {
+  retrieveOrders(event: any, date: any = this.dNow) {
     event.preventDefault();
 
     let utc = new Date(date).toJSON().slice(0, 10);
@@ -92,8 +131,6 @@ export class DashboardLiveComponent implements OnInit {
     })
       .then(response => response.json())
       .then(tickets => {
-
-        console.log(tickets)
 
         if (tickets.length > 0) {
 
