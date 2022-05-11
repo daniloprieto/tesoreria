@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>Favorite Animal</h1>
+
+<mat-dialog-content>
+  {{data.ticket | json }}
+</mat-dialog-content>
+<mat-dialog-actions  align = "end">
+  <button  mat-button  mat-dialog-close> Cancelar </button>
+  <button  mat-button [mat-dialog-close]="true"  cdkFocusInitial> Anular </button>
+</mat-dialog-actions>

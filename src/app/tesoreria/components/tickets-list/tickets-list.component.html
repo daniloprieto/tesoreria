@@ -1,0 +1,10 @@
+<div class="custom-modal">
+
+  <div class="row mt-3" *ngFor="let ticket of tickets">
+    <span class="col-8">{{ ticket.id + ' - ' +ticket.name + ' ' + ticket.lastName + ' - ' + getType(ticket.type) + ' $' + ticket.amount}}</span>
+    <div class="col-2">
+      <button type="button" class="btn btn-danger" (click)="openPopup(ticket)">x</button>
+    </div>
+  </div>
+
+</div>
