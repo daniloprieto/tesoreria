@@ -1,8 +1,36 @@
-<h1 mat-dialog-title>Favorite Animal</h1>
+<h1 mat-dialog-title>Anular Ticket Nº {{data.ticket.id}}</h1>
 
 <mat-dialog-content>
-  {{data.ticket | json }}
+
+  <table class="table table-striped">
+    <tr>
+      <td colspan="2" class="table-active">Nombre:</td>
+      <td>{{data.ticket.name + ' ' + data.ticket.lastName}}</td>
+    </tr>
+    <tr>
+      <td colspan="2" class="table-active">Tipo:</td>
+      <td>{{data.ticket.type}}</td>
+    </tr>
+    <tr>
+      <td colspan="2" class="table-active">Digital:</td>
+      <td>{{data.ticket.digital ? 'SI':'NO'}}</td>
+    </tr>
+    <tr>
+      <td colspan="2" class="table-active">Monto:</td>
+      <td>${{data.ticket.amount}}</td>
+    </tr>
+    <tr>
+      <td colspan="2" class="table-active">Tesorero:</td>
+      <td>{{data.ticket.treasurer}}</td>
+    </tr>
+    <tr>
+      <td colspan="2" class="table-active">Fecha:</td>
+      <td>{{data.ticket.createdAt}}</td>
+    </tr>
+  </table>
+
 </mat-dialog-content>
+
 <mat-dialog-actions  align = "end">
   <button  mat-button  mat-dialog-close> Cancelar </button>
   <button  mat-button [mat-dialog-close]="true"  cdkFocusInitial> Anular </button>

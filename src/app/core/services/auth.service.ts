@@ -26,7 +26,6 @@ export class AuthService {
     this._http.post(path, body)
       .subscribe({
         next: (user: User) => {
-          console.log(user);
           if (user) {
             this.user.next(user);
             this._router.navigate(['']);

@@ -18,7 +18,10 @@ export class HttpCustomService {
 
     return new Observable((observer: Observer<any>) => {
       fetch(url, { method: "POST", body: body })
-        .then((r) => r.json().then((b) => { observer.next(b) }))
+        .then(
+          (r) => r.json().then((b) => {
+            r.status === 200 ? observer.next(b) : observer.error(b);
+          }))
         .catch((error) => observer.error(error))
     })
 

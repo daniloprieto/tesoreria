@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import { Ticket, TicketBase } from '../models/ticket.model';
 import { HttpCustomService } from './http-custom.service';
 import { Observable, tap, Subject } from 'rxjs';
+import { HelpersService } from './helpers.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +13,13 @@ export class TicketService {
 
   private userAvailable = false;
   public user!: User;
-  public utc = new Date().toJSON().slice(0, 10);
   public ticketsToday$: Subject<Ticket[]> = new Subject<Ticket[]>();
 
 
   constructor(
     private _auth: AuthService,
     private _http: HttpCustomService,
+    private _helpers: HelpersService
   ) {
     this._auth.user.subscribe(
       (user: User) => {
@@ -35,7 +36,7 @@ export class TicketService {
 
     return this._http.post(path, body)
       .pipe(
-        tap( res => this.getTicketsForDate(this.utc))
+        tap( res => this.getTicketsForDate(this._helpers.utcSlice()))
       );
 
   }
@@ -52,12 +53,16 @@ export class TicketService {
     const path = 'getTickets.php';
     const body = { date };
 
-    if (date === this.utc) {
+    if (date === this._helpers.utcSlice()) {
+
       this._http.post(path, body).subscribe({
-        next: (tickets) => this.ticketsToday$.next(tickets),
-        error: (error) => this.ticketsToday$.error(error)
+        next: (tickets) => {
+          this.ticketsToday$.next(tickets)
+        },
+        error: (error) => {
+          this.ticketsToday$.error(error);
         }
-      );
+      });
 
       return this.ticketsToday$;
 

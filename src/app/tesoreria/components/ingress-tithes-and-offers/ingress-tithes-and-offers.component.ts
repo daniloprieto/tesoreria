@@ -4,10 +4,9 @@ import { User } from 'src/app/core/models/user.model';
 import { AuthService } from '../../../core/services/auth.service';
 import { TicketBase } from '../../../core/models/ticket.model';
 import { AlertService } from '../../../core/services/alert.service';
-import { environment } from 'src/environments/environment';
 import { PrintService } from '../../../core/services/print.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { catchError } from 'rxjs/operators';
+import { HelpersService } from '../../../core/services/helpers.service';
 
 
 @Component({
@@ -18,15 +17,15 @@ import { catchError } from 'rxjs/operators';
 export class IngressTithesAndOffersComponent implements OnInit {
 
   public user!: User;
-  public dNow = new Date();
-  public dateARG = this.dNow.getDate()  + '/' + (this.dNow.getMonth() + 1) + '/' + this.dNow.getFullYear()
+  public todayEn!: string;
+  public todayEs!: string;
   public financialForm = new FormGroup({
     name: new FormControl('',[Validators.required]),
     lastName: new FormControl('', [Validators.required]),
     amount: new FormControl(0,[Validators.required]),
   });
 
-  public selectedDate = new FormControl(this.dNow);
+  public selectedDate = new FormControl();
   public isDigital = new FormControl(false);
 
   constructor(
@@ -34,10 +33,15 @@ export class IngressTithesAndOffersComponent implements OnInit {
     private _ticket: TicketService,
     private _alert: AlertService,
     private _print: PrintService,
+    private _helpers: HelpersService
   ) { }
 
   ngOnInit(): void {
-    this._auth.user.subscribe((user: User) => this.user = user)
+    this._auth.user.subscribe((user: User) => this.user = user);
+    this.todayEs = this._helpers.todayEsStr();
+    this.todayEn = this._helpers.todayEnStr();
+    this.selectedDate.setValue(this.todayEn);
+
   }
 
   setTicket(event: any) {
@@ -120,7 +124,7 @@ export class IngressTithesAndOffersComponent implements OnInit {
 
   }
 
-  retrieveOrders(event: any, date: any = this.dNow) {
+  retrieveOrders(event: any, date: any = this.todayEn) {
     event.preventDefault();
 
     let utc = new Date(date).toJSON().slice(0, 10);

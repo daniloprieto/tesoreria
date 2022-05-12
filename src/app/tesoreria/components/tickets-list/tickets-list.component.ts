@@ -1,36 +1,42 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { distinctUntilChanged, tap } from 'rxjs';
 import { Ticket } from 'src/app/core/models/ticket.model';
 import { User } from 'src/app/core/models/user.model';
 import { TicketService } from '../../../core/services/ticket.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalDeleteTicketDialog } from '../modal-delete-ticket/modal-delete-ticket.dialog';
+import { HelpersService } from '../../../core/services/helpers.service';
 
-
+export interface Transaction {
+  item: string;
+  cost: number;
+}
 @Component({
   selector: 'app-tickets-list',
   templateUrl: './tickets-list.component.html',
   styleUrls: ['./tickets-list.component.scss']
 })
 
-
-export class TicketsListComponent implements OnInit {
+export class TicketsListComponent {
   @Input() user!: User;
   public tickets: Ticket[] = [];
-  public dNow = new Date();
+  public todayEn!: string;
+  public todayEs!: string;
+  displayedColumns = ['id', 'name', 'type', 'amount','action'];
 
   constructor(
     private _ticket: TicketService,
-    private _dialog: MatDialog
-  ) { }
-
-  ngOnInit(): void {
+    private _dialog: MatDialog,
+    private _helpers: HelpersService
+  ) {
     this.retrieveOrders();
+    this.todayEs = this._helpers.todayEsStr();
+    this.todayEn = this._helpers.todayEnStr();
   }
 
-  retrieveOrders(date: any = this.dNow) {
+  retrieveOrders(date: any = this.todayEn) {
 
-    let utc = new Date(date).toJSON().slice(0, 10);
+    let utc = this._helpers.utcSlice(date);
 
     this._ticket.getTicketsForDate(utc)
       .pipe(
@@ -46,17 +52,7 @@ export class TicketsListComponent implements OnInit {
   }
 
   getType(type: string): string {
-    switch (type) {
-      case 'tithe':
-        return this.user.language === 'ES' ? 'Diezmo' : 'Dízimo';
-        break;
-      case 'offering':
-        return this.user.language === 'ES' ? 'Ofrenda' : 'Oferta';
-        break;
-      default:
-        return this.user.language === 'ES' ? 'Otro' : 'Outro';
-        break;
-    }
+    return this._helpers.getType(type, this.user.language);
   }
 
   openPopup(ticket: Ticket) {
@@ -64,6 +60,10 @@ export class TicketsListComponent implements OnInit {
       width: '250px',
       data:{ ticket }
     });
+  }
+
+  getTotalCost(): number {
+    return this.tickets.map(t => Number(t.amount)).reduce((acc, value) => acc + value, 0);
   }
 
 }

@@ -47,7 +47,7 @@
       <div class="accordion-body">
         <div class="row p-3">
           <div class="input-group date mb-3" id="datepicker">
-            <input type="date" class="form-control" id="date" [formControl]="selectedDate" value="{{dNow}}"/>
+            <input type="date" class="form-control" id="date" [formControl]="selectedDate" value="{{todayEn}}"/>
           </div>
           <button type="button" class="btn btn-success mb-1" id="reporter" (click)="retrieveOrders($event,selectedDate.value)">Imprimir</button>
           <button type="button" class="btn btn-danger" onclick="window.location.reload()">Salir</button>

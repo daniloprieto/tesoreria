@@ -43,8 +43,6 @@ export class PrintService {
 
   printTicket(tickets: TicketBase[]) {
 
-    console.log(tickets);
-
     let ids: number[] = [];
     let info = {
       name: '',
