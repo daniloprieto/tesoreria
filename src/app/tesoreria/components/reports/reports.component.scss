@@ -1,7 +1,7 @@
 @import '../../../../styles.scss';
 
 .bar{
-  @extend .custom-modal;
+  @extend .custom__modal;
   padding: 1.25rem 3rem;
 }
 

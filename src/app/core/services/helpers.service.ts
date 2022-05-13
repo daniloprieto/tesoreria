@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Ticket } from '../models/ticket.model';
 
 @Injectable({
   providedIn: 'root'
@@ -33,5 +34,9 @@ export class HelpersService {
         return language === 'ES' ? 'Otro' : 'Outro';
         break;
     }
+  }
+
+  getTotalActives(tickets:Ticket[]): number {
+    return tickets.map(t => Number(t.status) === 1 ? Number(t.amount) : 0).reduce((acc, value) => acc + value, 0);
   }
 }

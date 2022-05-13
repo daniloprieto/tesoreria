@@ -41,12 +41,16 @@ export class TicketService {
 
   }
 
-  updateTicket(ticket:Ticket):Observable<Ticket[]> {
-    const path = 'updateTicket.php';
+  cancelTicket(ticket: Ticket) {
+    ticket.status = 0;
+    ticket.treasurer = this.user.id;
+
+    const path = 'cancelTicket.php';
     const body = ticket;
 
-    return this._http.post(path, body);
-
+    return this._http.post(path, body).pipe(
+      tap( res => this.getTicketsForDate(this._helpers.utcSlice()))
+    );;
   }
 
   getTicketsForDate(date: any):Observable<Ticket[]> {

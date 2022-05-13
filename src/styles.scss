@@ -1,22 +1,48 @@
-@import url('https://fonts.googleapis.com/css2?family=Overpass:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@200&family=Overpass:wght@400;700&family=Poppins:wght@400;500;600&display=swap');
 @import 'material-icons/iconfont/material-icons.css';
 
+$color-primary:#102a57;
+$color-secondary:'';
+$color-accept:#126e4f;
+$color-danger:#a02f0d;
+$color-info:$color-primary;
+$color-black:#000000;
+$color-gray:#6b6868;
+$color-white:#ffffff;
 
 body{
+
+  font-family: 'Overpass', sans-serif;
   width: 100%;
   height: 100vh;
-  background-color: hsl(216, 12%, 8%)!important;
+  background-color: $color-primary !important;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.custom-modal{
-  background: white;
+.custom__modal{
+  background: $color-white;
   border-radius:20px;
   opacity: 0.9;
   padding: 3em;
   min-width: 500px;
+}
+
+.btn-primary{
+  background: $color-info !important;
+}
+
+.btn-secondary{
+  background: $color-gray !important;
+}
+
+.btn-success{
+  background: $color-accept !important;
+}
+
+.btn-danger{
+  background: $color-danger !important;
 }
 
 @media (max-width: 540px) {
@@ -24,7 +50,7 @@ body{
     margin: auto;
     height: auto;
   }
-  .custom-modal{
+  .custom__modal{
     margin: 1%;
     padding: 1em;
     min-width: auto;

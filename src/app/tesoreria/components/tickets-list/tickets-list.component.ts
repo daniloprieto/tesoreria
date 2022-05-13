@@ -6,6 +6,7 @@ import { TicketService } from '../../../core/services/ticket.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalDeleteTicketDialog } from '../modal-delete-ticket/modal-delete-ticket.dialog';
 import { HelpersService } from '../../../core/services/helpers.service';
+import { AlertService } from '../../../core/services/alert.service';
 
 export interface Transaction {
   item: string;
@@ -27,7 +28,8 @@ export class TicketsListComponent {
   constructor(
     private _ticket: TicketService,
     private _dialog: MatDialog,
-    private _helpers: HelpersService
+    private _helpers: HelpersService,
+    private _alert: AlertService
   ) {
     this.retrieveOrders();
     this.todayEs = this._helpers.todayEsStr();
@@ -44,7 +46,10 @@ export class TicketsListComponent {
         tap(
           {
             next: (tickets) => { if (tickets.length > 0) this.tickets = tickets },
-            error: (error) => { console.error(error) }
+            error: (error) => {
+              console.error(error);
+              this._alert.showAlert('Error al recuperar la lista de tickets');
+            }
           }
         )
       ).subscribe()
@@ -58,12 +63,27 @@ export class TicketsListComponent {
   openPopup(ticket: Ticket) {
     const dialogRef = this._dialog.open(ModalDeleteTicketDialog, {
       width: '250px',
-      data:{ ticket }
-    });
+      data: { ticket }
+    }).afterClosed().subscribe(
+      (res: boolean) => { if (res) this.cancelTicket(ticket) } );
+    
   }
 
   getTotalCost(): number {
-    return this.tickets.map(t => Number(t.amount)).reduce((acc, value) => acc + value, 0);
+    return this._helpers.getTotalActives(this.tickets);
+  }
+
+  cancelTicket(ticket: Ticket) {
+    this._ticket.cancelTicket(ticket).pipe(
+      tap(
+        {
+          error: (error) => {
+            console.error(error);
+            this._alert.showAlert('No es posible anular el ticklet Nº' + ticket.id);
+          }
+        }
+      )
+    ).subscribe()
   }
 
 }
