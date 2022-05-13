@@ -1,3 +1,5 @@
+@import '../../../../styles.scss';
+
 .container {
   height: 340px;
   overflow: auto;
@@ -17,4 +19,9 @@ tr.mat-footer-row {
 
 .crossed {
   text-decoration: line-through;
+  color: $color-danger;
+}
+
+.cancel {
+  color: $color-danger;
 }
