@@ -17,7 +17,7 @@ export class HelpersService {
     return this.date.getDate() + '/' + (this.date.getMonth() + 1) + '/' + this.date.getFullYear();
   }
 
-  utcSlice(date: Date = this.date) {
+  utcSlice(date: Date = new Date(this.todayEnStr())) {
     return date.toJSON().slice(0, 10);
   }
 
