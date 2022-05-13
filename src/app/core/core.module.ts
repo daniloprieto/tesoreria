@@ -6,7 +6,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table'
-
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [],
@@ -18,7 +20,10 @@ import { MatTableModule } from '@angular/material/table'
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
-    MatTableModule ],
+    MatTableModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatTabsModule ],
   exports: [
     FormsModule,
     ReactiveFormsModule,
@@ -26,7 +31,10 @@ import { MatTableModule } from '@angular/material/table'
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
-    MatTableModule
+    MatTableModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatTabsModule
   ]
 })
 export class CoreModule { }

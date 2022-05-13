@@ -1,0 +1,10 @@
+@import '../../../../styles.scss';
+
+.bar{
+  @extend .custom-modal;
+  padding: 1.25rem 3rem;
+}
+
+mat-form-field {
+  margin-right: 12px;
+}

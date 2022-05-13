@@ -1,12 +1,35 @@
-<!-- <div class="custom-modal" id="form-view"> -->
-<div class="row">
-  <div class="col">
-    <app-ingress-tithes-and-offers></app-ingress-tithes-and-offers>
+<div class="row mb-3">
+  <div class="col-2">
+    <img src="../../../../assets/images/logo.png" alt="logo">
   </div>
-  <div class="col">
+  <div class="col-8"></div>
+  <div class="col-2">
+    <button mat-raised-button color="warn" class="float-end align-items-end" (click)="logout()">
+      <mat-icon class="text-light mr-3" >close</mat-icon>
+      <span class="text-light">{{user.name + ' ' + user.lastName}}</span>
+    </button>
+  </div>
+</div>
+<div class="row">
+  <div class="col mb-3">
+    <div class="custom-modal" id="form-view">
+      <mat-tab-group>
+        <mat-tab label="Diezmos / ofrendas">
+          <app-ingress-tithes-and-offers></app-ingress-tithes-and-offers>
+        </mat-tab>
+        <mat-tab label="Ingreso">
+          <app-ingress></app-ingress>
+        </mat-tab>
+        <mat-tab label="Egreso">
+          <app-egress></app-egress>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+  <div class="col mb-3">
     <app-tickets-list [user]="user"></app-tickets-list>
   </div>
 </div>
-
-
-<!-- </div> -->
+<div class="row">
+  <app-reports></app-reports>
+</div>

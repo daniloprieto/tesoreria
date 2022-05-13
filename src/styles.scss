@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Overpass:wght@400;700&display=swap');
-@import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
 @import 'material-icons/iconfont/material-icons.css';
 
 
@@ -17,12 +16,17 @@ body{
   border-radius:20px;
   opacity: 0.9;
   padding: 3em;
-  //width: 30vw;
-  //margin: 20vh auto;
+  min-width: 500px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 540px) {
+  body{
+    margin: auto;
+    height: auto;
+  }
   .custom-modal{
-    width: 320px;
+    margin: 1%;
+    padding: 1em;
+    min-width: auto;
   }
 }

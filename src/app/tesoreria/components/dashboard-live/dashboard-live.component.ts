@@ -17,4 +17,8 @@ export class DashboardLiveComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  logout() {
+    window.location.reload();
+  }
+
 }

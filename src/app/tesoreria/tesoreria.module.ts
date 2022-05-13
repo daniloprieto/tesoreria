@@ -7,6 +7,9 @@ import { CoreModule } from '../core/core.module';
 import { IngressTithesAndOffersComponent } from './components/ingress-tithes-and-offers/ingress-tithes-and-offers.component';
 import { TicketsListComponent } from './components/tickets-list/tickets-list.component';
 import { ModalDeleteTicketDialog } from './components/modal-delete-ticket/modal-delete-ticket.dialog';
+import { ReportsComponent } from './components/reports/reports.component';
+import { IngressComponent } from './components/ingress/ingress.component';
+import { EgressComponent } from './components/egress/egress.component';
 
 
 @NgModule({
@@ -15,6 +18,9 @@ import { ModalDeleteTicketDialog } from './components/modal-delete-ticket/modal-
     IngressTithesAndOffersComponent,
     TicketsListComponent,
     ModalDeleteTicketDialog,
+    ReportsComponent,
+    IngressComponent,
+    EgressComponent,
   ],
   imports: [
     CommonModule,

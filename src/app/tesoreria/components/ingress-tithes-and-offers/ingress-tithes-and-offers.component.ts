@@ -17,15 +17,12 @@ import { HelpersService } from '../../../core/services/helpers.service';
 export class IngressTithesAndOffersComponent implements OnInit {
 
   public user!: User;
-  public todayEn!: string;
-  public todayEs!: string;
   public financialForm = new FormGroup({
     name: new FormControl('',[Validators.required]),
     lastName: new FormControl('', [Validators.required]),
     amount: new FormControl(0,[Validators.required]),
   });
 
-  public selectedDate = new FormControl();
   public isDigital = new FormControl(false);
 
   constructor(
@@ -33,14 +30,10 @@ export class IngressTithesAndOffersComponent implements OnInit {
     private _ticket: TicketService,
     private _alert: AlertService,
     private _print: PrintService,
-    private _helpers: HelpersService
   ) { }
 
   ngOnInit(): void {
     this._auth.user.subscribe((user: User) => this.user = user);
-    this.todayEs = this._helpers.todayEsStr();
-    this.todayEn = this._helpers.todayEnStr();
-    this.selectedDate.setValue(this.todayEn);
 
   }
 
@@ -121,36 +114,6 @@ export class IngressTithesAndOffersComponent implements OnInit {
           }
         })
     })
-
-  }
-
-  retrieveOrders(event: any, date: any = this.todayEn) {
-    event.preventDefault();
-
-    let utc = new Date(date).toJSON().slice(0, 10);
-
-    this._ticket.getTicketsForDate(utc)
-      .subscribe(
-        {
-          next: (tickets) => {
-
-            if (tickets.length > 0) {
-
-              if (this._print.printReport(tickets, date)) this.reset();
-
-            } else {
-
-              this._alert.showAlert('No hay datos para imprimir')
-
-            }
-          },
-          error: (error) => {
-            this._alert.showAlert('No hay datos para imprimir');
-            console.error(error);
-          }
-      }
-
-    );
 
   }
 
