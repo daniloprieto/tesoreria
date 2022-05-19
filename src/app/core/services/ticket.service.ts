@@ -15,7 +15,6 @@ export class TicketService {
   public user!: User;
   public ticketsToday$: Subject<Ticket[]> = new Subject<Ticket[]>();
 
-
   constructor(
     private _auth: AuthService,
     private _http: HttpCustomService,
@@ -190,6 +189,13 @@ export class TicketService {
     return this._http.post(path, body);
 
 
+  }
+
+  getCashClosingReports():Observable<Report[]> {
+    const path = 'getCashClosingReport.php';
+    const body = '';
+
+    return this._http.post(path, body);
   }
 
 }

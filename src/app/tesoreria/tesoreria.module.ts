@@ -10,6 +10,7 @@ import { ModalDeleteTicketDialog } from './components/modal-delete-ticket/modal-
 import { ReportsComponent } from './components/reports/reports.component';
 import { IngressComponent } from './components/ingress/ingress.component';
 import { EgressComponent } from './components/egress/egress.component';
+import { BalanzComponent } from './components/balanz/balanz.component';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { EgressComponent } from './components/egress/egress.component';
     ReportsComponent,
     IngressComponent,
     EgressComponent,
+    BalanzComponent,
   ],
   imports: [
     CommonModule,

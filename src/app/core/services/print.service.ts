@@ -94,6 +94,54 @@ export class PrintService {
 
     return view;
   }
+  designTicketIngress(ticket: TicketBase):any {
+
+    let controlLine = '<span style="font-size:10px">Ticket Nº:' + ticket.id + ' ';
+    let controlData = ticket.digital > 0 ? controlLine + 'Ingreso Digital' : controlLine + 'Ingreso Efectivo';
+
+    let leafDesign = [
+      '<html lang="es"><body style="font-family: monospace, monospace !important;font-size:12px">',
+      controlData,
+      '<div style="width:250px">',
+      '<h5>Iglesia Centro de Adoración Gilgal</h5>',
+      '<span>Recibimos la suma de: <br>$' + ticket.amount + '</span><br>',
+      '<span>en concepto de: <br>' + ticket.description + '</span><br>',
+      '<br><span> Tesorero ' + this.user.name + '</span><br><br>',
+      '<div>'+ this.disclaimer +'</div><br>',
+      '</div>',
+      '</body></html>'
+    ];
+
+    let view = window.open('', 'PRINT', 'height=400,width=600')!;
+
+    leafDesign.map((line) => view.document.write(line));
+
+    return view;
+  }
+  designTicketEgress(ticket: TicketBase):any {
+
+    let controlLine = '<span style="font-size:10px">Ticket Nº:' + ticket.id + ' ';
+    let controlData = ticket.digital > 0 ? controlLine + 'Egreso Digital' : controlLine + 'Egreso Efectivo';
+
+    let leafDesign = [
+      '<html lang="es"><body style="font-family: monospace, monospace !important;font-size:12px">',
+      controlData,
+      '<div style="width:250px">',
+      '<h5>Iglesia Centro de Adoración Gilgal</h5>',
+      '<span>Se entrega la suma de: <br>$' + ticket.amount + '</span><br>',
+      '<span>en concepto de: <br>' + ticket.description + '</span><br>',
+      '<br><span> Tesorero ' + this.user.name + '</span><br><br>',
+      '<div>'+ this.disclaimer +'</div><br>',
+      '</div>',
+      '</body></html>'
+    ];
+
+    let view = window.open('', 'PRINT', 'height=400,width=600')!;
+
+    leafDesign.map((line) => view.document.write(line));
+
+    return view;
+  }
 
   designReport(tickets: Ticket[], date: string):any {
 
@@ -286,16 +334,22 @@ export class PrintService {
     view.close();
   }
 
-  print(type: string, tickets: Ticket[] | any , date?: string) {
+  print(type: string, data: Ticket[] | any , date?: string) {
     let view;
 
 
     switch (type) {
       case 'designTicket':
-        view = this.designTicket(tickets);
+        view = this.designTicket(data);
         break;
       case 'designReport':
-        view = this.designReport(this._helpers.getActiveTickets(tickets), date!);
+        view = this.designReport(this._helpers.getActiveTickets(data), date!);
+        break;
+      case 'designTicketIngress':
+        view = this.designTicketIngress(data);
+        break;
+      case 'designTicketEgress':
+        view = this.designTicketEgress(data);
         break;
     }
 

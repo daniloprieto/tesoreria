@@ -88,4 +88,14 @@ export class TicketsListComponent {
     ).subscribe()
   }
 
+  isCrossed(ticket: Ticket):string {
+    if (Number(ticket.status) === 1 && ticket.type === 'Egress') {
+      return 'egress';
+    } else if (Number(ticket.status) === 1 && (ticket.type === 'Ingress' || ticket.type === 'tithe' || ticket.type === 'offering')) {
+      return 'ingress';
+    } else {
+      return 'crossed';
+    }
+  }
+
 }

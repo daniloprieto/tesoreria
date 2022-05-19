@@ -19,9 +19,13 @@ tr.mat-footer-row {
 
 .crossed {
   text-decoration: line-through;
+  color: $color-gray;
+}
+
+.egress{
   color: $color-danger;
 }
 
-.cancel {
-  color: $color-danger;
+.ingress {
+  color: $color-accept;
 }

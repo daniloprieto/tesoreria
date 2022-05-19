@@ -30,6 +30,12 @@ export class HelpersService {
       case 'offering':
         return language === 'ES' ? 'Ofrenda' : 'Oferta';
         break;
+      case 'Ingress':
+        return language === 'ES' ? 'Ingreso' : 'Ingresso';
+        break;
+      case 'Egress':
+        return language === 'ES' ? 'Salida' : 'Saída';
+        break;
       default:
         return language === 'ES' ? 'Otro' : 'Outro';
         break;
@@ -49,7 +55,7 @@ export class HelpersService {
   }
 
   getActiveTickets(tickets: Ticket[]): Ticket[] {
-    let activeTickets = tickets.filter(t => (Number(t.status) === 1 || Number(t.status) === 4) && (t.type !== 'Egress'));
+    let activeTickets = tickets.filter(t => (Number(t.status) === 1 || Number(t.status) === 4));
     return activeTickets;
   }
 }

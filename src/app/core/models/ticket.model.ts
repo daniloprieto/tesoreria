@@ -1,3 +1,4 @@
+
 export interface TicketBase{
   id?: number,
   status?: number,
@@ -31,7 +32,12 @@ export interface CashClosingInfo{
 }
 
 export interface Report extends CashClosingAmounts{
+  id?: number;
+  status?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
   tickets: number[];
-  treasurer: number;
+  treasurer: number | string;
   headquarter: number | string;
 }
+
