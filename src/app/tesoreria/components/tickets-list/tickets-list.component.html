@@ -32,7 +32,7 @@
     <ng-container matColumnDef="amount">
       <th mat-header-cell *matHeaderCellDef> Monto </th>
       <td mat-cell *matCellDef="let ticket" [ngClass]="ticket.status !== '1' ? 'crossed':''"> {{ticket.amount | currency}} </td>
-      <td mat-footer-cell *matFooterCellDef> {{getTotalCost() | currency}} </td>
+      <td mat-footer-cell *matFooterCellDef> {{getTotalAmount() | currency}} </td>
     </ng-container>
 
     <ng-container matColumnDef="action">

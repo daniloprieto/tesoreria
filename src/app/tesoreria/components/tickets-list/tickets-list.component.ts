@@ -31,12 +31,12 @@ export class TicketsListComponent {
     private _helpers: HelpersService,
     private _alert: AlertService
   ) {
-    this.retrieveOrders();
+    this.retrieveTickets();
     this.todayEs = this._helpers.todayEsStr();
     this.todayEn = this._helpers.todayEnStr();
   }
 
-  retrieveOrders(date: any = this.todayEn) {
+  retrieveTickets(date: any = this.todayEn) {
 
     let utc = this._helpers.utcSlice(date);
 
@@ -45,7 +45,9 @@ export class TicketsListComponent {
         distinctUntilChanged(),
         tap(
           {
-            next: (tickets) => { if (tickets.length > 0) this.tickets = tickets },
+            next: (tickets) => {
+              if (tickets.length > 0) this.tickets = this._helpers.getActiveTickets(tickets)
+            },
             error: (error) => {
               console.error(error);
               this._alert.showAlert('Error al recuperar la lista de tickets');
@@ -66,10 +68,10 @@ export class TicketsListComponent {
       data: { ticket }
     }).afterClosed().subscribe(
       (res: boolean) => { if (res) this.cancelTicket(ticket) } );
-    
+
   }
 
-  getTotalCost(): number {
+  getTotalAmount(): number {
     return this._helpers.getTotalActives(this.tickets);
   }
 

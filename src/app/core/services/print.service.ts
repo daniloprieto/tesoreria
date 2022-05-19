@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Ticket, TicketBase } from '../models/ticket.model';
+import { Ticket, TicketBase, CashClosingAmounts } from '../models/ticket.model';
 import { User } from '../models/user.model';
 import { AuthService } from './auth.service';
+import { HelpersService } from './helpers.service';
 
 @Injectable({
   providedIn: 'root'
@@ -37,11 +38,14 @@ export class PrintService {
 
   user!: User;
 
-  constructor(private _auth: AuthService) {
+  constructor(
+    private _auth: AuthService,
+    private _helpers: HelpersService
+  ) {
     this._auth.user.subscribe((user: User) => this.user = user);
   }
 
-  printTicket(tickets: TicketBase[]) {
+  designTicket(tickets: TicketBase[]):any {
 
     let ids: number[] = [];
     let info = {
@@ -88,14 +92,10 @@ export class PrintService {
 
     leafDesign.map((line) => view.document.write(line));
 
-    //view.document.close();
-    view.focus();
-    view.print();
-    view.close();
-    return true;
+    return view;
   }
 
-  printReport(tickets: Ticket[], date: string) {
+  designReport(tickets: Ticket[], date: string):any {
 
     let totalTithesCash = 0;
     let totalOfferingsCash = 0;
@@ -221,17 +221,13 @@ export class PrintService {
         '</tr>',
         '</table>',
         '<br><br><br>',
-        '<span> Revisor de cuentas</span>',
         '</div>',
         '</body></html>'
       ];
 
       tableTotals.map((line) => view.document.write(line));
 
-      view.focus();
-      view.print();
-      view.close();
-      return true;
+      return view;
 
     }
 
@@ -256,5 +252,57 @@ export class PrintService {
 
     }
 
+  }
+
+  printCashClosing(tickets: Ticket[], cashClosingAmounts: CashClosingAmounts, date: string) {
+
+    let view = this.designReport(tickets.filter(t => Number(t.status) === 3), date);
+
+    let cashClosingTable = [
+      '<br><br><br>',
+      '<table style="max-width:280px">',
+      '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
+      '<th style="border: 0.5px solid black">Cierre de Caja</th>',
+      '<th style="border: 0.5px solid black">TOTAL</th>',
+      '</tr>',
+      '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
+      '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">Caja Iglesia</td>',
+      '<td style="text-align:right">$' + cashClosingAmounts.headquarterGain + '</td>',
+      '</tr>',
+      '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
+      '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">Relatorio</td>',
+      '<td style="text-align:right">$' + cashClosingAmounts.headquarterTithe + '</td>',
+      '</tr>',
+      '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
+      '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">Oficio Pastor</td>',
+      '<td style="text-align:right">$' + cashClosingAmounts.pastorGain + '</td>',
+      '</tr>',
+      '</table>'];
+
+    cashClosingTable.map(line => view.document.write(line));
+
+    view.focus();
+    view.print();
+    view.close();
+  }
+
+  print(type: string, tickets: Ticket[] | any , date?: string) {
+    let view;
+
+
+    switch (type) {
+      case 'designTicket':
+        view = this.designTicket(tickets);
+        break;
+      case 'designReport':
+        view = this.designReport(this._helpers.getActiveTickets(tickets), date!);
+        break;
+    }
+
+    view.focus();
+    view.print();
+    view.close();
+
+    return true;
   }
 }

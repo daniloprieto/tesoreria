@@ -36,7 +36,20 @@ export class HelpersService {
     }
   }
 
-  getTotalActives(tickets:Ticket[]): number {
-    return tickets.map(t => Number(t.status) === 1 ? Number(t.amount) : 0).reduce((acc, value) => acc + value, 0);
+  getTotalActives(tickets: Ticket[]): number {
+    let ingress = tickets
+      .map(t => (Number(t.status) === 1 || Number(t.status) === 4) && (t.type !== 'Egress') ? Number(t.amount) : 0)
+      .reduce((acc, value) => acc + value, 0);
+
+    let egress = tickets
+      .map(t => (Number(t.status) === 1 || Number(t.status) === 4) && (t.type === 'Egress') ? Number(t.amount) : 0)
+      .reduce((acc, value) => acc + value, 0);
+
+    return (ingress - egress);
+  }
+
+  getActiveTickets(tickets: Ticket[]): Ticket[] {
+    let activeTickets = tickets.filter(t => (Number(t.status) === 1 || Number(t.status) === 4) && (t.type !== 'Egress'));
+    return activeTickets;
   }
 }

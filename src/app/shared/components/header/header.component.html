@@ -3,7 +3,7 @@
     <img src="../../../../assets/images/logo.png" alt="logo">
   </div>
   <div class="col-8"></div>
-  <div class="col-2" *ngIf="user.name.length > 0">
+  <div class="col-2" *ngIf="user.name && user.name.length > 0">
     <button class="float-end align-items-end btn btn-danger" (click)="logout()">
       <span class="text-light">{{user.name + ' ' + user.lastName}}</span>
     </button>

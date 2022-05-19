@@ -105,7 +105,7 @@ export class IngressTithesAndOffersComponent implements OnInit {
             ticket.id = res.id;
             savedTickets.push(ticket);
             if ((index + 1) === tickets.length) {
-              if (this._print.printTicket(savedTickets)) this.reset();
+              if (this._print.print('designTicket',savedTickets)) this.reset();
             }
           },
           error: (error) => {

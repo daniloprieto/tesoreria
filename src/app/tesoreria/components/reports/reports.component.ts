@@ -41,7 +41,7 @@ export class ReportsComponent implements OnInit {
 
             if (tickets.length > 0) {
 
-              this._print.printReport(tickets, date);
+              this._print.print('designReport', tickets, date);
 
             } else {
 
@@ -57,6 +57,11 @@ export class ReportsComponent implements OnInit {
 
     );
 
+  }
+
+  cashClosingReport(event: any) {
+    event.preventDefault();
+    this._ticket.cashClosing();
   }
 
 }
