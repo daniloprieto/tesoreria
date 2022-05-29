@@ -38,5 +38,10 @@ export class AuthService {
 
   }
 
+  logout(){
+    this.user.next({} as User);
+    this._router.navigate(['/auth']);
+  }
+
 
 }

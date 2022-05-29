@@ -19,7 +19,7 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     if (confirm("Va a cerrar la sesión")) {
-      window.location.reload();
+      this._auth.logout();
     }
   }
 

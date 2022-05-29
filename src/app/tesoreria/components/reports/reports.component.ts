@@ -4,6 +4,7 @@ import { FormControl } from '@angular/forms';
 import { TicketService } from '../../../core/services/ticket.service';
 import { PrintService } from '../../../core/services/print.service';
 import { AlertService } from '../../../core/services/alert.service';
+import { Subscription, tap } from 'rxjs';
 
 @Component({
   selector: 'app-reports',
@@ -15,6 +16,7 @@ export class ReportsComponent implements OnInit {
   public todayEs!: string;
   public selectedDate = new FormControl();
   public availableCashClosing = false;
+  private _sub$: Subscription[] = [];
 
 
   constructor(
@@ -28,7 +30,13 @@ export class ReportsComponent implements OnInit {
     this.todayEs = this._helpers.todayEsStr();
     this.todayEn = this._helpers.todayEnStr();
     this.selectedDate.setValue(this.todayEn);
-    this._ticket.ticketsToday$.subscribe(tickets => this.availableCashClosing = tickets.length > 0 ? true : false);
+    this.getTicketsToday();
+  }
+
+  getTicketsToday() {
+    this._sub$.push(
+      this._ticket.ticketsToday$.subscribe(tickets => this.availableCashClosing = tickets.length > 0 ? true : false)
+    );
   }
 
   retrieveOrders(event: any, date: any = this.todayEn) {
@@ -36,9 +44,9 @@ export class ReportsComponent implements OnInit {
 
     let utc = new Date(date).toJSON().slice(0, 10);
 
-    this._ticket.getTicketsForDate(utc)
-      .subscribe(
-        {
+    this._sub$.push(this._ticket.getTicketsForDate(utc)
+      .pipe(
+        tap({
           next: (tickets) => {
 
             if (tickets.length > 0) {
@@ -55,9 +63,10 @@ export class ReportsComponent implements OnInit {
             this._alert.showAlert('No hay datos para imprimir');
             console.error(error);
           }
-      }
-
-    );
+      })
+      )
+      .subscribe()
+    )
 
   }
 
@@ -66,6 +75,10 @@ export class ReportsComponent implements OnInit {
     if (confirm("Va a cerra la caja ")) {
       this._ticket.cashClosing();
     }
+  }
+
+  ngOnDestroy(): void {
+    this._sub$.map((sub) => sub.unsubscribe());
   }
 
 }
