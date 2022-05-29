@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Ticket, TicketBase, CashClosingAmounts } from '../models/ticket.model';
 import { User } from '../models/user.model';
 import { AuthService } from './auth.service';
-import { HelpersService } from './helpers.service';
+import { HelpersService, TYPE } from './helpers.service';
 
 @Injectable({
   providedIn: 'root'
@@ -57,8 +57,8 @@ export class PrintService {
     };
 
     tickets.map((ticket) => {
-      if (ticket.type === 'tithe') info.titheAmount = ticket.amount;
-      if (ticket.type === 'offering') info.offeringAmount = ticket.amount;
+      if (ticket.type === TYPE.TITHE) info.titheAmount = ticket.amount;
+      if (ticket.type === TYPE.OFFERING) info.offeringAmount = ticket.amount;
       ids.push(ticket.id!);
       info.name = ticket.name;
       info.lastName = ticket.lastName;
@@ -164,17 +164,17 @@ export class PrintService {
 
       tickets.map((ticket: Ticket) => {
         switch (ticket.type) {
-          case 'tithe':
+          case TYPE.TITHE:
             tithes.push(ticket);
             break;
-          case 'offering':
+          case TYPE.OFFERING:
             offerings.push(ticket);
             break;
         }
       });
 
-      let tableTithes = tithes.length > 0 ? createTable('tithe', tithes) : [];
-      let tableOfferings = offerings.length > 0 ? createTable('offering', offerings) : [];
+      let tableTithes = tithes.length > 0 ? createTable(TYPE.TITHE, tithes) : [];
+      let tableOfferings = offerings.length > 0 ? createTable(TYPE.OFFERING, offerings) : [];
 
       return showDesign(tableTithes, tableOfferings);
 
@@ -182,7 +182,7 @@ export class PrintService {
 
     function createTable(type: string, tickets: Ticket[]) {
 
-      let selected = type === 'tithe' ? 'Diezmos' : 'Ofrendas';
+      let selected = type === TYPE.TITHE ? 'Diezmos' : 'Ofrendas';
 
       let table = [
         '<table><tr style="font-family: monospace, monospace !important;font-size:12px !important">',

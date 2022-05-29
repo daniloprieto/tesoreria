@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { Ticket, TicketBase, CashClosingAmounts, CashClosingInfo, Report } from '../models/ticket.model';
 import { HttpCustomService } from './http-custom.service';
 import { Observable, tap, Subject, concatMap, BehaviorSubject, map, from, mergeMap, switchMap } from 'rxjs';
-import { HelpersService } from './helpers.service';
+import { HelpersService, STATUS, TYPE } from './helpers.service';
 import { PrintService } from './print.service';
 
 @Injectable({
@@ -41,7 +41,7 @@ export class TicketService {
   }
 
   cancelTicket(ticket: Ticket):Observable<any> {
-    ticket.status = 0;
+    ticket.status = STATUS.CANCEL;
     ticket.treasurer = this.user.id;
 
     const path = 'cancelTicket.php';
@@ -53,7 +53,7 @@ export class TicketService {
   }
 
   closeTicket(ticket: Ticket): Observable<any> {
-    ticket.status = 3;
+    ticket.status = STATUS.CLOSED;
     ticket.treasurer = this.user.id;
 
     const path = 'closeTicket.php';
@@ -133,33 +133,33 @@ export class TicketService {
 
     let cashClosingTickets: TicketBase[] = [
       {
-        status: 4,
+        status: STATUS.REPORTED,
         name: '',
         lastName: '',
         description: 'Diezmo Iglesia ' + this.user.headquarter + ' ' + this._helpers.todayEsStr(),
         amount: headquarterTithe,
         treasurer: this.user.id,
-        type: 'Egress',
+        type: TYPE.EGRESS,
         digital: 0
       },
       {
-        status: 4,
+        status: STATUS.REPORTED,
         name: '',
         lastName: '',
         description: 'Oficio del pastor ' + this.user.headquarter + ' ' + this._helpers.todayEsStr(),
         amount: pastorService,
         treasurer: this.user.id,
-        type: 'Egress',
+        type: TYPE.EGRESS,
         digital: 0
       },
       {
-        status: 3,
+        status: STATUS.CLOSED,
         name: '',
         lastName: '',
         description: 'Diezmo del pastor ' + this.user.headquarter + ' ' + this._helpers.todayEsStr(),
         amount: pastorTithe,
         treasurer: this.user.id,
-        type: 'Ingress',
+        type: TYPE.INGRESS,
         digital: 0
       }
     ];
@@ -169,7 +169,7 @@ export class TicketService {
   }
 
   saveCashClosingReport(tickets: Ticket[], cashClosingAmounts: CashClosingAmounts):Observable<Report> {
-    const ticketsFiltered = tickets.filter(t => Number(t.status) === 3 || Number(t.status) === 0).map(t => Number(t.id));
+    const ticketsFiltered = tickets.filter(t => Number(t.status) === STATUS.CLOSED || Number(t.status) === STATUS.CANCEL).map(t => Number(t.id));
 
     const report:Report = {
       headquarterTreasure: cashClosingAmounts.headquarterTreasure,

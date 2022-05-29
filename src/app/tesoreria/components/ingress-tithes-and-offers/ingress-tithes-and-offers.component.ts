@@ -6,7 +6,7 @@ import { TicketBase } from '../../../core/models/ticket.model';
 import { AlertService } from '../../../core/services/alert.service';
 import { PrintService } from '../../../core/services/print.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { HelpersService } from '../../../core/services/helpers.service';
+import { HelpersService, TYPE } from '../../../core/services/helpers.service';
 
 
 @Component({
@@ -52,7 +52,7 @@ export class IngressTithesAndOffersComponent implements OnInit {
         name,
         lastName,
         amount: Number((document.getElementById('diezmo') as HTMLInputElement).value),
-        type: 'tithe',
+        type: TYPE.TITHE,
         digital: this.isDigital.value ? 1 : 0,
         treasurer: this.user.id
       };
@@ -73,7 +73,7 @@ export class IngressTithesAndOffersComponent implements OnInit {
         name: (document.getElementById('name') as HTMLInputElement).value,
         lastName: (document.getElementById('lastname') as HTMLInputElement).value,
         amount: Number((document.getElementById('ofrenda') as HTMLInputElement).value),
-        type: 'offering',
+        type: TYPE.OFFERING,
         digital: this.isDigital.value ? 1 : 0,
         treasurer: this.user.id
       };

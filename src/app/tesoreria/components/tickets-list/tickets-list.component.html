@@ -38,12 +38,12 @@
     <ng-container matColumnDef="action">
       <th mat-header-cell *matHeaderCellDef></th>
       <td style="text-align: right" mat-cell *matCellDef="let ticket">
-        <ng-container *ngIf="ticket.status === '1'">
+        <ng-container *ngIf="!isCanceled(ticket.status)">
           <button mat-button (click)="openPopup(ticket)" >
             <mat-icon color="warn">delete_outline</mat-icon>
           </button>
         </ng-container>
-        <ng-container *ngIf="ticket.status !== '1'">
+        <ng-container *ngIf="isCanceled(ticket.status)">
           <span class="crossed">Anulado</span>
         </ng-container>
       </td>

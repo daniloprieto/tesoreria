@@ -5,7 +5,7 @@ import { User } from 'src/app/core/models/user.model';
 import { TicketService } from '../../../core/services/ticket.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalDeleteTicketDialog } from '../modal-delete-ticket/modal-delete-ticket.dialog';
-import { HelpersService } from '../../../core/services/helpers.service';
+import { HelpersService, STATUS, TYPE } from '../../../core/services/helpers.service';
 import { AlertService } from '../../../core/services/alert.service';
 
 export interface Transaction {
@@ -89,9 +89,9 @@ export class TicketsListComponent {
   }
 
   isCrossed(ticket: Ticket):string {
-    if (Number(ticket.status) === 1 && ticket.type === 'Egress') {
+    if (Number(ticket.status) === STATUS.ACTIVED && ticket.type === TYPE.EGRESS) {
       return 'egress';
-    } else if (Number(ticket.status) === 1 && (ticket.type === 'Ingress' || ticket.type === 'tithe' || ticket.type === 'offering')) {
+    } else if (Number(ticket.status) === 1 && (ticket.type === TYPE.INGRESS || ticket.type === TYPE.TITHE || ticket.type === TYPE.OFFERING)) {
       return 'ingress';
     } else {
       return 'crossed';
@@ -99,8 +99,12 @@ export class TicketsListComponent {
   }
 
   show(tickets: Ticket[]) {
-    const availableTickets = tickets.filter(ticket => Number(ticket.status) !== 0)
+    const availableTickets = this._helpers.getActiveTickets(tickets);
     return availableTickets.length > 0 ? true : false;
+  }
+
+  isCanceled(status:number): boolean{
+    return +status === STATUS.CANCEL ? true : false;
   }
 
 }

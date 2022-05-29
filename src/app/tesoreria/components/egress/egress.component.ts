@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TicketBase } from 'src/app/core/models/ticket.model';
 import { User } from 'src/app/core/models/user.model';
 import { AlertService } from 'src/app/core/services/alert.service';
+import { TYPE } from 'src/app/core/services/helpers.service';
 import { PrintService } from 'src/app/core/services/print.service';
 import { TicketService } from 'src/app/core/services/ticket.service';
 import { AuthService } from '../../../core/services/auth.service';
@@ -38,7 +39,7 @@ export class EgressComponent implements OnInit {
     if (Number((document.getElementById('amount') as HTMLInputElement).value) > 0) {
       let ticket: TicketBase = {
         amount: Number((document.getElementById('amount') as HTMLInputElement).value),
-        type: 'Egress',
+        type: TYPE.EGRESS,
         description: (document.getElementById('description') as HTMLInputElement).value,
         digital: this.isDigital.value ? 1 : 0,
         treasurer: this.user.id,
