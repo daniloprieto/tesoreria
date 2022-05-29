@@ -98,4 +98,9 @@ export class TicketsListComponent {
     }
   }
 
+  show(tickets: Ticket[]) {
+    const availableTickets = tickets.filter(ticket => Number(ticket.status) !== 0)
+    return availableTickets.length > 0 ? true : false;
+  }
+
 }

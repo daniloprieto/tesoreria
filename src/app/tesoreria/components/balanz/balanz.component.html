@@ -10,6 +10,7 @@
             <th scope="col">Caja Iglesia</th>
             <th scope="col">Oficio Pastor</th>
             <th scope="col">Relatorio</th>
+            <th scope="col">Detalle</th>
           </tr>
         </thead>
         <tbody>
@@ -20,6 +21,11 @@
             <td>${{report.headquarterGain}}</td>
             <td>${{report.pastorGain}}</td>
             <td>${{report.headquarterTithe}}</td>
+            <td>
+              <button mat-button (click)="openReport(report)" >
+                <mat-icon color="primary">visibility</mat-icon>
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>

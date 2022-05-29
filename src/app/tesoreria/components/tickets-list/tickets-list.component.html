@@ -6,7 +6,7 @@
 
 
 <ng-template #table>
-  <table mat-table [dataSource]="tickets" *ngIf="tickets.length > 0">
+  <table mat-table [dataSource]="tickets" *ngIf="show(tickets)">
     <!-- Id Column -->
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef> Nº </th>

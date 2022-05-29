@@ -18,7 +18,9 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    window.location.reload();
+    if (confirm("Va a cerrar la sesión")) {
+      window.location.reload();
+    }
   }
 
 }

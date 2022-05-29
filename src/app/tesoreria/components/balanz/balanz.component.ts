@@ -31,4 +31,8 @@ export class BalanzComponent implements OnInit {
     return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
   }
 
+  openReport(report: Report) {
+    console.log(report)
+  }
+
 }

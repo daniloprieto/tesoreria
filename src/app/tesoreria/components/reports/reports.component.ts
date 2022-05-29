@@ -14,6 +14,7 @@ export class ReportsComponent implements OnInit {
   public todayEn!: string;
   public todayEs!: string;
   public selectedDate = new FormControl();
+  public availableCashClosing = false;
 
 
   constructor(
@@ -27,6 +28,7 @@ export class ReportsComponent implements OnInit {
     this.todayEs = this._helpers.todayEsStr();
     this.todayEn = this._helpers.todayEnStr();
     this.selectedDate.setValue(this.todayEn);
+    this._ticket.ticketsToday$.subscribe(tickets => this.availableCashClosing = tickets.length > 0 ? true : false);
   }
 
   retrieveOrders(event: any, date: any = this.todayEn) {
@@ -61,7 +63,9 @@ export class ReportsComponent implements OnInit {
 
   cashClosingReport(event: any) {
     event.preventDefault();
-    this._ticket.cashClosing();
+    if (confirm("Va a cerra la caja ")) {
+      this._ticket.cashClosing();
+    }
   }
 
 }

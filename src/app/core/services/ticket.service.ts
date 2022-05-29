@@ -13,7 +13,7 @@ import { PrintService } from './print.service';
 export class TicketService {
 
   public user!: User;
-  public ticketsToday$: Subject<Ticket[]> = new Subject<Ticket[]>();
+  public ticketsToday$ = new Subject<Ticket[]>();
 
   constructor(
     private _auth: AuthService,
