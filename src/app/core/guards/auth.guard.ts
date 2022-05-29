@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, BehaviorSubject } from 'rxjs';
 import { User } from '../models/user.model';
 import { AuthService } from '../services/auth.service';
 
@@ -12,25 +12,22 @@ export class AuthGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    
-    let logged = false;
-    
+
+    let logged = new BehaviorSubject<boolean>(false);
+
     this._auth.user
-      .pipe(
-        tap(
-          (user: User) => {
-            logged = !user.name || !user.role ? false : true
-          }
-        )
+    .pipe(
+      tap(
+        (user: User) => {
+          logged.next(!user.name || !user.role ? false : true);
+          if (!logged.value) this._router.navigate(['/auth']);
+        }
       )
+    )
       .subscribe()
 
-    if (logged) {
-      return true
-    } else {
-      this._router.navigate(['/auth'])
-      return false
-    }
+    return logged;
+
   }
-  
+
 }
