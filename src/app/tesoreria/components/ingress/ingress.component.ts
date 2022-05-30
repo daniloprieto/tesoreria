@@ -24,8 +24,6 @@ export class IngressComponent implements OnInit {
     digital:[false]
   });
 
-  public isDigital = new FormControl(false);
-
   constructor(
     private _auth: AuthService,
     private _ticket: TicketService,

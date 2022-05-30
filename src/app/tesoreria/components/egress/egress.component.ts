@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { TicketBase } from 'src/app/core/models/ticket.model';
 import { User } from 'src/app/core/models/user.model';
 import { AlertService } from 'src/app/core/services/alert.service';
@@ -14,75 +15,81 @@ import { AuthService } from '../../../core/services/auth.service';
 })
 export class EgressComponent implements OnInit {
 
+  private _sub$: Subscription[] = [];
   public user!: User;
-  public financialForm = new FormGroup({
-    name: new FormControl('',[Validators.required]),
-    lastName: new FormControl('', [Validators.required]),
-    amount: new FormControl(0,[Validators.required]),
+  public financialForm = this._fb.group({
+    description:['', [Validators.required, Validators.minLength(5)]],
+    amount: ['', Validators.required],
+    digital:[false]
   });
 
-  public isDigital = new FormControl(false);
 
   constructor(
     private _auth: AuthService,
     private _ticket: TicketService,
     private _alert: AlertService,
-    private _print: PrintService,) { }
+    private _print: PrintService,
+    private _fb: FormBuilder
+    ) { }
 
   ngOnInit(): void {
-    this._auth.user.subscribe((user: User) => this.user = user);
+    this._sub$.push(
+      this._auth.user.subscribe((user: User) => this.user = user)
+    );
   }
 
   setTicket(event: any) {
     event.preventDefault();
 
-    if (Number((document.getElementById('amount') as HTMLInputElement).value) > 0) {
-      let ticket: TicketBase = {
-        amount: Number((document.getElementById('amount') as HTMLInputElement).value),
-        type: TYPE.EGRESS,
-        description: (document.getElementById('description') as HTMLInputElement).value,
-        digital: this.isDigital.value ? 1 : 0,
-        treasurer: this.user.id,
-        name: '',
-        lastName:'',
-      };
+    if (this.financialForm.valid) {
 
-      if (ticket.description!.length > 0 ) {
-        if (ticket.amount > 0) {
-          this.saveTicket(ticket);
-          } else {
-            this._alert.showAlert('Debe ingresar al menos un valor');
-          }
+      if (this.financialForm.get('amount')?.value > 0) {
+
+        let ticket: TicketBase = {
+          amount: this.financialForm.get('amount')?.value,
+          type: TYPE.EGRESS,
+          description: this.financialForm.get('description')?.value,
+          digital: this.financialForm.get('isDigital')?.value ? 1 : 0,
+          treasurer: this.user.id,
+          name: '',
+          lastName: '',
+        };
+
+        this.saveTicket(ticket);
+
       } else {
-        this._alert.showAlert('Debe ingresar una descripción');
+          this._alert.showAlert('Debe ingresar al menos un valor');
       }
+    } else {
+      this._alert.showAlert('Debe ingresar una descripción');
     }
 
   }
 
   saveTicket(ticket: TicketBase) {
-
+    this._sub$.push(
       this._ticket.generateTicket(ticket)
         .subscribe({
           next: (res) => {
-            console.log('new id', res)
             ticket.id = res.id;
-            if (this._print.print('designTicketEgress',ticket)) this.reset();
+            if (this._print.print('designTicketEgress', ticket)) this.reset();
           },
           error: (error) => {
             this._alert.showAlert('Error al guardar el Ticket');
             console.error(error);
           }
         })
+    );
 
   }
 
   reset() {
-      (document.getElementById('name') as HTMLInputElement).value = '';
-      (document.getElementById('lastname') as HTMLInputElement).value = '';
-      (document.getElementById('diezmo') as HTMLInputElement).value = '';
-      (document.getElementById('ofrenda') as HTMLInputElement).value = '';
+    this.financialForm.reset();
   }
 
+  ngOnDestroy(): void {
+    this.reset();
+    this._sub$.map((sub) => sub.unsubscribe());
+  }
 
 }
