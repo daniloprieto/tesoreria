@@ -48,7 +48,7 @@ export class TicketService {
     const body = ticket;
 
     return this._http.post(path, body).pipe(
-      tap( res => this.getTicketsForDate(this._helpers.utcSlice()))
+      tap( () => this.getTicketsForDate(this._helpers.utcSlice()))
     );;
   }
 
@@ -100,12 +100,12 @@ export class TicketService {
         tap((res) => cashClosingAmounts = res.cashClosingAmounts),
         switchMap(res => from(res.cashClosingTickets)),
         switchMap(ticket => this.generateTicket(ticket)),
-        concatMap((lastId) => this.getTicketsForDate(date)),
+        concatMap(() => this.getTicketsForDate(date)),
         tap((tickets) => allTickets = tickets),
         switchMap(tickets => from(tickets.filter(t => Number(t.status) === 1))),
         switchMap(ticket => this.closeTicket(ticket)),
         tap(res => this._print.printCashClosing(allTickets, cashClosingAmounts, date)),
-        concatMap((lastId) => this.getTicketsForDate(date)),
+        concatMap(() => this.getTicketsForDate(date)),
         switchMap((tickets) => this.saveCashClosingReport(tickets, cashClosingAmounts)),
       )
       .subscribe();
@@ -130,37 +130,34 @@ export class TicketService {
       pastorGain,
     }
 
+    let data = {
+      name: '',
+      lastName: '',
+      treasurer: this.user.id,
+      digital: 0
+    }
 
     let cashClosingTickets: TicketBase[] = [
       {
+        ...data,
         status: STATUS.REPORTED,
-        name: '',
-        lastName: '',
         description: 'Diezmo Iglesia ' + this.user.headquarter + ' ' + this._helpers.todayEsStr(),
         amount: headquarterTithe,
-        treasurer: this.user.id,
         type: TYPE.EGRESS,
-        digital: 0
       },
       {
+        ...data,
         status: STATUS.REPORTED,
-        name: '',
-        lastName: '',
         description: 'Oficio del pastor ' + this.user.headquarter + ' ' + this._helpers.todayEsStr(),
         amount: pastorService,
-        treasurer: this.user.id,
         type: TYPE.EGRESS,
-        digital: 0
       },
       {
+        ...data,
         status: STATUS.CLOSED,
-        name: '',
-        lastName: '',
         description: 'Diezmo del pastor ' + this.user.headquarter + ' ' + this._helpers.todayEsStr(),
         amount: pastorTithe,
-        treasurer: this.user.id,
         type: TYPE.INGRESS,
-        digital: 0
       }
     ];
 
@@ -169,15 +166,10 @@ export class TicketService {
   }
 
   saveCashClosingReport(tickets: Ticket[], cashClosingAmounts: CashClosingAmounts):Observable<Report> {
-    const ticketsFiltered = tickets.filter(t => Number(t.status) === STATUS.CLOSED || Number(t.status) === STATUS.CANCEL).map(t => Number(t.id));
+    const ticketsFiltered = tickets.filter(t => +t.status! === STATUS.CLOSED || +t.status! === STATUS.CANCEL).map(t => Number(t.id));
 
-    const report:Report = {
-      headquarterTreasure: cashClosingAmounts.headquarterTreasure,
-      headquarterTithe: cashClosingAmounts.headquarterTithe,
-      headquarterGain: cashClosingAmounts.headquarterGain,
-      pastorService: cashClosingAmounts.pastorService,
-      pastorTithe: cashClosingAmounts.pastorTithe,
-      pastorGain: cashClosingAmounts.pastorGain,
+    const report: Report = {
+      ...cashClosingAmounts,
       tickets: ticketsFiltered,
       treasurer: this.user.id,
       headquarter: this.user.headquarter
