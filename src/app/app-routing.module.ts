@@ -10,6 +10,7 @@ const routes: Routes = [
   {
     path: 'tesoreria',
     loadChildren: () => import('./tesoreria/tesoreria.module').then(m => m.TesoreriaModule),
+    canActivate:[AuthGuard]
   },
   {
     path: '',
