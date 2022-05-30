@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { distinctUntilChanged, tap } from 'rxjs';
+import { distinctUntilChanged, tap, BehaviorSubject, Subscription } from 'rxjs';
 import { Ticket } from 'src/app/core/models/ticket.model';
 import { User } from 'src/app/core/models/user.model';
 import { TicketService } from '../../../core/services/ticket.service';
@@ -23,7 +23,10 @@ export class TicketsListComponent {
   public tickets: Ticket[] = [];
   public todayEn!: string;
   public todayEs!: string;
-  displayedColumns = ['id', 'name', 'type', 'amount','action'];
+  displayedColumns = ['id', 'name', 'type', 'amount', 'action'];
+
+  public showTable = new BehaviorSubject<boolean>(false);
+  private _sub$: Subscription[] = [];
 
   constructor(
     private _ticket: TicketService,
@@ -40,21 +43,25 @@ export class TicketsListComponent {
 
     let utc = this._helpers.utcSlice(date);
 
-    this._ticket.getTicketsForDate(utc)
-      .pipe(
-        distinctUntilChanged(),
-        tap(
-          {
-            next: (tickets) => {
-              if (tickets.length > 0) this.tickets = this._helpers.getActiveTickets(tickets)
-            },
-            error: (error) => {
-              console.error(error);
-              this._alert.showAlert('Error al recuperar la lista de tickets');
+    this._sub$.push(
+      this._ticket.getTicketsForDate(utc)
+        .pipe(
+          distinctUntilChanged(),
+          tap(
+            {
+              next: (tickets) => {
+                if (tickets.length > 0) this.tickets = this._helpers.getActiveTickets(tickets);
+
+                this.showTable.next(this.tickets.length > 0 ? true : false);
+              },
+              error: (error) => {
+                console.error(error);
+                this._alert.showAlert('Error al recuperar la lista de tickets');
+              }
             }
-          }
-        )
+          )
       ).subscribe()
+    );
 
   }
 
@@ -63,11 +70,14 @@ export class TicketsListComponent {
   }
 
   openPopup(ticket: Ticket) {
-    const dialogRef = this._dialog.open(ModalDeleteTicketDialog, {
+    this._sub$.push(
+      this._dialog.open(ModalDeleteTicketDialog, {
       width: '250px',
       data: { ticket }
-    }).afterClosed().subscribe(
-      (res: boolean) => { if (res) this.cancelTicket(ticket) } );
+      })
+        .afterClosed()
+        .subscribe((res: boolean) => { if (res) this.cancelTicket(ticket) })
+    );
 
   }
 
@@ -76,16 +86,18 @@ export class TicketsListComponent {
   }
 
   cancelTicket(ticket: Ticket) {
-    this._ticket.cancelTicket(ticket).pipe(
-      tap(
-        {
-          error: (error) => {
-            console.error(error);
-            this._alert.showAlert('No es posible anular el ticklet Nº' + ticket.id);
+    this._sub$.push(
+      this._ticket.cancelTicket(ticket).pipe(
+        tap(
+          {
+            error: (error) => {
+              console.error(error);
+              this._alert.showAlert('No es posible anular el ticklet Nº' + ticket.id);
+            }
           }
-        }
-      )
-    ).subscribe()
+        )
+      ).subscribe()
+    );
   }
 
   isCrossed(ticket: Ticket):string {
@@ -105,6 +117,10 @@ export class TicketsListComponent {
 
   isCanceled(status:number): boolean{
     return +status === STATUS.CANCEL ? true : false;
+  }
+
+  ngOnDestroy(): void {
+    this._sub$.map((sub) => sub.unsubscribe());
   }
 
 }

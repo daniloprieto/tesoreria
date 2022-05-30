@@ -18,7 +18,6 @@ export class ReportsComponent implements OnInit {
   public availableCashClosing = false;
   private _sub$: Subscription[] = [];
 
-
   constructor(
     private _helpers: HelpersService,
     private _ticket: TicketService,
@@ -35,7 +34,8 @@ export class ReportsComponent implements OnInit {
 
   getTicketsToday() {
     this._sub$.push(
-      this._ticket.ticketsToday$.subscribe(tickets => this.availableCashClosing = tickets.length > 0 ? true : false)
+      this._ticket.ticketsToday$
+        .subscribe(tickets => this.availableCashClosing = tickets.length > 0 ? true : false)
     );
   }
 
@@ -44,7 +44,8 @@ export class ReportsComponent implements OnInit {
 
     let utc = new Date(date).toJSON().slice(0, 10);
 
-    this._sub$.push(this._ticket.getTicketsForDate(utc)
+    this._sub$.push(
+      this._ticket.getTicketsForDate(utc)
       .pipe(
         tap({
           next: (tickets) => {

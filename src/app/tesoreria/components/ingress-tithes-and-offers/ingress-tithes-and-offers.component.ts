@@ -5,8 +5,9 @@ import { AuthService } from '../../../core/services/auth.service';
 import { TicketBase } from '../../../core/models/ticket.model';
 import { AlertService } from '../../../core/services/alert.service';
 import { PrintService } from '../../../core/services/print.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { HelpersService, TYPE } from '../../../core/services/helpers.service';
+import { Validators, FormBuilder } from '@angular/forms';
+import { TYPE } from '../../../core/services/helpers.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -17,79 +18,91 @@ import { HelpersService, TYPE } from '../../../core/services/helpers.service';
 export class IngressTithesAndOffersComponent implements OnInit {
 
   public user!: User;
-  public financialForm = new FormGroup({
-    name: new FormControl('',[Validators.required]),
-    lastName: new FormControl('', [Validators.required]),
-    amount: new FormControl(0,[Validators.required]),
-  });
 
-  public isDigital = new FormControl(false);
+  private _sub$: Subscription[] = [];
+
+  public ticketForm = this._fb.group({
+    name: ['', [Validators.required]],
+    lastName: ['', [Validators.required]],
+    isDigital: [false],
+    tithe: [''],
+    offering:['']
+  });
 
   constructor(
     private _auth: AuthService,
     private _ticket: TicketService,
     private _alert: AlertService,
     private _print: PrintService,
-  ) { }
+    private _fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
-    this._auth.user.subscribe((user: User) => this.user = user);
+    this._sub$.push(
+      this._auth.user.subscribe((user: User) => this.user = user)
+    );
+  }
 
+  formatterStrings(s: string): string{
+    return s.charAt(0).toUpperCase() + (s.slice(1)).toLowerCase();
   }
 
   setTicket(event: any) {
     event.preventDefault();
 
-    let n = (document.getElementById('name') as HTMLInputElement).value;
-    let l = (document.getElementById('lastname') as HTMLInputElement).value;
-    let name = n.charAt(0).toUpperCase() + (n.slice(1)).toLowerCase();
-    let lastName = l.charAt(0).toUpperCase() + (l.slice(1)).toLowerCase();
+    let n = this.ticketForm.get('name')?.value;
+    let l = this.ticketForm.get('lastName')?.value;
 
-    let tickets: TicketBase[] = [];
+    let name = this.formatterStrings(n);
+    let lastName = this.formatterStrings(l);
+    let digital = this.ticketForm.get('isDigital')?.value ? 1 : 0;
+    let treasurer = this.user.id;
 
-    if (Number((document.getElementById('diezmo') as HTMLInputElement).value) > 0) {
+    if (this.ticketForm.invalid) {
+
+      this._alert.showAlert('Debe ingresar nombre y apellido');
+
+    } else {
+
+      let tickets: TicketBase[] = [];
+
       let ticket: TicketBase = {
-        name,
-        lastName,
-        amount: Number((document.getElementById('diezmo') as HTMLInputElement).value),
-        type: TYPE.TITHE,
-        digital: this.isDigital.value ? 1 : 0,
-        treasurer: this.user.id
+        name, lastName, digital, treasurer,
+        amount: 0,
+        type: '',
       };
 
-      if (ticket.name.length > 0 && ticket.lastName.length > 0) {
-        if (ticket.amount > 0) {
-          tickets.push(ticket);
-          } else {
-            this._alert.showAlert('Debe ingresar al menos un valor');
-          }
+      if (this.ticketForm.get('tithe')?.value <= 0 && this.ticketForm.get('offering')?.value <= 0) {
+
+        this._alert.showAlert('Debe ingresar al menos un valor');
+
       } else {
-        this._alert.showAlert('Debe ingresar nombre y apellido');
+
+        if (this.ticketForm.get('tithe')?.value > 0) {
+          tickets.push(
+            {
+              ...ticket,
+              amount: this.ticketForm.get('tithe')?.value,
+              type: TYPE.TITHE
+            }
+          )
+        }
+
+        if (this.ticketForm.get('offering')?.value > 0) {
+          tickets.push(
+            {
+              ...ticket,
+              amount: this.ticketForm.get('offering')?.value,
+              type: TYPE.OFFERING
+            }
+          )
+        };
+
+        if(tickets.length > 0) this.saveTicket(tickets);
       }
+
+
     }
-
-    if (Number((document.getElementById('ofrenda') as HTMLInputElement).value) > 0) {
-      let ticket: TicketBase = {
-        name: (document.getElementById('name') as HTMLInputElement).value,
-        lastName: (document.getElementById('lastname') as HTMLInputElement).value,
-        amount: Number((document.getElementById('ofrenda') as HTMLInputElement).value),
-        type: TYPE.OFFERING,
-        digital: this.isDigital.value ? 1 : 0,
-        treasurer: this.user.id
-      };
-
-      if (ticket.name.length > 0 && ticket.lastName.length > 0) {
-        if (ticket.amount > 0) {
-          tickets.push(ticket);
-          } else {
-            this._alert.showAlert('Debe ingresar al menos un valor');
-          }
-      } else {
-        this._alert.showAlert('Debe ingresar nombre y apellido');
-      }
-    }
-
-    if(tickets.length > 0) this.saveTicket(tickets);
 
   }
 
@@ -98,29 +111,33 @@ export class IngressTithesAndOffersComponent implements OnInit {
     let savedTickets: TicketBase[] = [];
 
     tickets.map((ticket, index) => {
-      this._ticket.generateTicket(ticket)
-        .subscribe({
-          next: (res) => {
-            console.log('new id', res)
-            ticket.id = res.id;
-            savedTickets.push(ticket);
-            if ((index + 1) === tickets.length) {
-              if (this._print.print('designTicket',savedTickets)) this.reset();
+      this._sub$.push(
+        this._ticket.generateTicket(ticket)
+          .subscribe({
+            next: (res) => {
+              console.log('new id', res)
+              ticket.id = res.id;
+              savedTickets.push(ticket);
+              if ((index + 1) === tickets.length) {
+                if (this._print.print('designTicket', savedTickets)) this.reset();
+              }
+            },
+            error: (error) => {
+              this._alert.showAlert('Error al guardar el Ticket');
+              console.error(error);
             }
-          },
-          error: (error) => {
-            this._alert.showAlert('Error al guardar el Ticket');
-            console.error(error);
-          }
-        })
+          })
+      );
     })
 
   }
 
   reset() {
-      (document.getElementById('name') as HTMLInputElement).value = '';
-      (document.getElementById('lastname') as HTMLInputElement).value = '';
-      (document.getElementById('diezmo') as HTMLInputElement).value = '';
-      (document.getElementById('ofrenda') as HTMLInputElement).value = '';
+    this.ticketForm.reset();
+  }
+
+  ngOnDestroy(): void {
+    this.reset();
+    this._sub$.map((sub) => sub.unsubscribe());
   }
 }
