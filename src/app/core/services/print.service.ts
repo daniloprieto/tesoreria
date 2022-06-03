@@ -72,7 +72,7 @@ export class PrintService {
     let controlData = info.digital > 0 ? controlLine + 'Digital' : controlLine + 'Efectivo';
 
     let leafDesign = [
-      '<html lang="es"><body style="font-family: monospace, monospace !important;font-size:12px">',
+      '<html lang="es"><body style="font-family: monospace, monospace !important;font-size:14px !important">',
       controlData,
       '<div style="width:250px">',
       '<h5>Iglesia Centro de Adoración Gilgal</h5>',
@@ -100,7 +100,7 @@ export class PrintService {
     let controlData = ticket.digital > 0 ? controlLine + 'Ingreso Digital' : controlLine + 'Ingreso Efectivo';
 
     let leafDesign = [
-      '<html lang="es"><body style="font-family: monospace, monospace !important;font-size:12px">',
+      '<html lang="es"><body style="font-family: monospace, monospace !important;font-size:14px !important">',
       controlData,
       '<div style="width:250px">',
       '<h5>Iglesia Centro de Adoración Gilgal</h5>',
@@ -124,7 +124,7 @@ export class PrintService {
     let controlData = ticket.digital > 0 ? controlLine + 'Egreso Digital' : controlLine + 'Egreso Efectivo';
 
     let leafDesign = [
-      '<html lang="es"><body style="font-family: monospace, monospace !important;font-size:12px">',
+      '<html lang="es"><body style="font-family: monospace, monospace !important;font-size:14px !important">',
       controlData,
       '<div style="width:250px">',
       '<h5>Iglesia Centro de Adoración Gilgal</h5>',
