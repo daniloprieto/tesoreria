@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { distinctUntilChanged, tap, BehaviorSubject, Subscription } from 'rxjs';
+import { tap, BehaviorSubject, Subscription, distinct } from 'rxjs';
 import { Ticket } from 'src/app/core/models/ticket.model';
 import { User } from 'src/app/core/models/user.model';
 import { TicketService } from '../../../core/services/ticket.service';
@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ModalDeleteTicketDialog } from '../modal-delete-ticket/modal-delete-ticket.dialog';
 import { HelpersService, STATUS, TYPE } from '../../../core/services/helpers.service';
 import { AlertService } from '../../../core/services/alert.service';
+import { PrintService } from '../../../core/services/print.service';
 
 export interface Transaction {
   item: string;
@@ -30,6 +31,7 @@ export class TicketsListComponent {
 
   constructor(
     private _ticket: TicketService,
+    private _print: PrintService,
     private _dialog: MatDialog,
     private _helpers: HelpersService,
     private _alert: AlertService
@@ -46,7 +48,7 @@ export class TicketsListComponent {
     this._sub$.push(
       this._ticket.getTicketsForDate(utc)
         .pipe(
-          distinctUntilChanged(),
+          distinct(),
           tap(
             {
               next: (tickets) => {
@@ -63,6 +65,10 @@ export class TicketsListComponent {
       ).subscribe()
     );
 
+  }
+
+  rePrint(ticket: Ticket) {
+    this._print.print('designTicket', [ticket])
   }
 
   getType(type: string): string {

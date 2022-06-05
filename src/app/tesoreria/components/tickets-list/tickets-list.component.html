@@ -38,6 +38,11 @@
     <ng-container matColumnDef="action">
       <th mat-header-cell *matHeaderCellDef></th>
       <td style="text-align: right" mat-cell *matCellDef="let ticket">
+        <ng-container>
+          <button mat-button (click)="rePrint(ticket)" >
+            <mat-icon color="accept">print</mat-icon>
+          </button>
+        </ng-container>
         <ng-container *ngIf="!isCanceled(ticket.status)">
           <button mat-button (click)="openPopup(ticket)" >
             <mat-icon color="warn">delete_outline</mat-icon>

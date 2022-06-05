@@ -1,3 +1,10 @@
-<app-header></app-header>
-<div *ngIf="showAlert" class="alert alert-danger" role="alert">{{message}}</div>
-<router-outlet></router-outlet>
+<div class="header">
+  <app-header></app-header>
+  <div *ngIf="showAlert" class="alert alert-danger" role="alert">{{message}}</div>
+</div>
+<div class="cont">
+  <router-outlet></router-outlet>
+</div>
+
+
+
