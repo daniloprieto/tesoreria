@@ -1,64 +1,16 @@
 <div class="custom__modal">
   <div class="container mat-elevation-z8">
-    <ng-container *ngIf="showTable | async ; then table else notFound"></ng-container>
+    <ng-container *ngIf="tickets.length ; then table else notFound"></ng-container>
   </div>
 </div>
 
 
 <ng-template #table>
-  <table mat-table [dataSource]="tickets" *ngIf="show(tickets)">
-    <!-- Id Column -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> Nº </th>
-      <td mat-cell *matCellDef="let ticket" [ngClass]="isCrossed(ticket)"> {{ticket.id}} </td>
-      <td mat-footer-cell *matFooterCellDef>{{todayEs}}</td>
-    </ng-container>
-
-    <!-- name Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Nombre </th>
-      <td mat-cell *matCellDef="let ticket" [ngClass]="isCrossed(ticket)"> {{ ticket.name + ' ' + ticket.lastName }} </td>
-      <td mat-footer-cell *matFooterCellDef></td>
-    </ng-container>
-
-    <!-- type Column -->
-    <ng-container matColumnDef="type">
-      <th mat-header-cell *matHeaderCellDef> Tipo </th>
-      <td mat-cell *matCellDef="let ticket" [ngClass]="isCrossed(ticket)"> {{ getType(ticket.type) }} </td>
-      <td mat-footer-cell *matFooterCellDef> Total </td>
-    </ng-container>
-
-    <!-- Amount Column -->
-    <ng-container matColumnDef="amount">
-      <th mat-header-cell *matHeaderCellDef> Monto </th>
-      <td style="text-align: right" mat-cell *matCellDef="let ticket" [ngClass]="isCrossed(ticket)"> {{ticket.amount | currency}} </td>
-      <td style="text-align: right" mat-footer-cell *matFooterCellDef> {{getTotalAmount() | currency}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="action">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td style="text-align: right" mat-cell *matCellDef="let ticket">
-        <ng-container>
-          <button mat-button (click)="rePrint(ticket)" >
-            <mat-icon color="accept">print</mat-icon>
-          </button>
-        </ng-container>
-        <ng-container *ngIf="!isCanceled(ticket.status)">
-          <button mat-button (click)="openPopup(ticket)" >
-            <mat-icon color="warn">delete_outline</mat-icon>
-          </button>
-        </ng-container>
-        <ng-container *ngIf="isCanceled(ticket.status)">
-          <span class="crossed">Anulado</span>
-        </ng-container>
-      </td>
-      <td mat-footer-cell *matFooterCellDef></td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
-  </table>
+  <app-tickets-table
+    [user]="user"
+    [buttons]="['print', 'delete']"
+    [tickets]="tickets">
+  </app-tickets-table>
 </ng-template>
 
 <ng-template #notFound>

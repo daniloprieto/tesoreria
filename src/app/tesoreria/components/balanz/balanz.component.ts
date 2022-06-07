@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Report } from '../../../core/models/ticket.model';
+import { Report, Ticket } from '../../../core/models/ticket.model';
 import { TicketService } from '../../../core/services/ticket.service';
 import { HelpersService } from '../../../core/services/helpers.service';
+import { MatDialog } from '@angular/material/dialog';
+import { distinct, Subscription, tap } from 'rxjs';
+import { AlertService } from '../../../core/services/alert.service';
+import { ModalBalanzDetailsDialog } from '../modal-balanz-details/modal-balanz-details.dialog';
 
 @Component({
   selector: 'app-balanz',
@@ -11,10 +15,14 @@ import { HelpersService } from '../../../core/services/helpers.service';
 export class BalanzComponent implements OnInit {
 
   public reports!: Report[];
+  private _sub$: Subscription[] = [];
 
   constructor(
     private _tickets: TicketService,
-    private _helpers: HelpersService
+    private _dialog: MatDialog,
+    private _helpers: HelpersService,
+    private _ticket: TicketService,
+    private _alert: AlertService
   ) { }
 
   ngOnInit(): void {
@@ -32,7 +40,50 @@ export class BalanzComponent implements OnInit {
   }
 
   openReport(report: Report) {
-    console.log(report)
+
+    this.retrieveTickets(report.createdAt)
+
+  }
+
+  retrieveTickets(date: any) {
+
+    let d = this._helpers.dateEnStr( new Date(date));
+    let utc = this._helpers.utcSlice(new Date(d));
+
+    this._sub$.push(
+      this._ticket.getTicketsForDate(utc)
+        .pipe(
+          distinct(),
+          tap(
+            {
+              next: (tickets) => {
+                if (tickets.length > 0) this.openPopup(tickets);
+
+              },
+              error: (error) => {
+                console.error(error);
+                this._alert.showAlert('Error al recuperar la lista de tickets');
+              }
+            }
+          )
+      ).subscribe()
+    );
+
+  }
+
+  openPopup(tickets: Ticket[]) {
+    this._sub$.push(
+      this._dialog.open(ModalBalanzDetailsDialog, {
+      data: { tickets }
+      })
+        .afterClosed()
+        .subscribe()
+    );
+
+  }
+
+  ngOnDestroy(): void {
+    this._sub$.map(sub => sub.unsubscribe());
   }
 
 }

@@ -7,19 +7,17 @@ import { Ticket } from '../models/ticket.model';
 
 export class HelpersService {
 
-  public date = new Date();
-
   constructor() { }
 
-  todayEnStr(): string {
-    return this.date.toLocaleDateString('en-US');
+  dateEnStr(date = new Date()): string {
+    return date.toLocaleDateString('en-US');
   }
 
-  todayEsStr(): string {
-    return this.date.getDate() + '/' + (this.date.getMonth() + 1) + '/' + this.date.getFullYear();
+  dateEsStr(date = new Date()): string {
+    return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
   }
 
-  utcSlice(date: Date = new Date(this.todayEnStr())) {
+  utcSlice(date: Date = new Date(this.dateEnStr())) {
     return date.toJSON().slice(0, 10);
   }
 
@@ -62,9 +60,9 @@ export class HelpersService {
 }
 
 export const STATUS = {
-  CANCEL: 0,
-  ACTIVED: 1,
-  CLOSED: 3,
+  CANCEL: 0, // Ticket Cancelado
+  ACTIVED: 1, //Ticket creado que no esta en ningun reporte todavia
+  CLOSED: 3, //ticket que se agrego correctamente a un reporte
   REPORTED: 4,
   EXPORTED: 5
 }

@@ -141,21 +141,21 @@ export class TicketService {
       {
         ...data,
         status: STATUS.REPORTED,
-        description: 'Diezmo Iglesia ' + this.user.headquarter + ' ' + this._helpers.todayEsStr(),
+        description: 'Diezmo Iglesia ' + this.user.headquarter + ' ' + this._helpers.dateEsStr(),
         amount: headquarterTithe,
         type: TYPE.EGRESS,
       },
       {
         ...data,
         status: STATUS.REPORTED,
-        description: 'Oficio del pastor ' + this.user.headquarter + ' ' + this._helpers.todayEsStr(),
+        description: 'Oficio del pastor ' + this.user.headquarter + ' ' + this._helpers.dateEsStr(),
         amount: pastorService,
         type: TYPE.EGRESS,
       },
       {
         ...data,
         status: STATUS.CLOSED,
-        description: 'Diezmo del pastor ' + this.user.headquarter + ' ' + this._helpers.todayEsStr(),
+        description: 'Diezmo del pastor ' + this.user.headquarter + ' ' + this._helpers.dateEsStr(),
         amount: pastorTithe,
         type: TYPE.INGRESS,
       }

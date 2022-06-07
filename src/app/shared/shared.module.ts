@@ -3,18 +3,21 @@ import { CommonModule } from '@angular/common';
 
 import { HeaderComponent } from './components/header/header.component';
 import { CoreModule } from '../core/core.module';
+import { TicketsTableComponent } from './components/atoms/tables/tickets-table/tickets-table.component';
 
 
 @NgModule({
   declarations: [
-    HeaderComponent
+    HeaderComponent,
+    TicketsTableComponent
   ],
   imports: [
     CommonModule,
     CoreModule
   ],
   exports: [
-    HeaderComponent
+    HeaderComponent,
+    TicketsTableComponent
   ]
 })
 export class SharedModule { }

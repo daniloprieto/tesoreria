@@ -11,6 +11,8 @@ import { ReportsComponent } from './components/reports/reports.component';
 import { IngressComponent } from './components/ingress/ingress.component';
 import { EgressComponent } from './components/egress/egress.component';
 import { BalanzComponent } from './components/balanz/balanz.component';
+import { ModalBalanzDetailsDialog } from './components/modal-balanz-details/modal-balanz-details.dialog';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -19,6 +21,7 @@ import { BalanzComponent } from './components/balanz/balanz.component';
     IngressTithesAndOffersComponent,
     TicketsListComponent,
     ModalDeleteTicketDialog,
+    ModalBalanzDetailsDialog,
     ReportsComponent,
     IngressComponent,
     EgressComponent,
@@ -27,6 +30,7 @@ import { BalanzComponent } from './components/balanz/balanz.component';
   imports: [
     CommonModule,
     CoreModule,
+    SharedModule,
     TesoreriaRoutingModule
   ]
 })

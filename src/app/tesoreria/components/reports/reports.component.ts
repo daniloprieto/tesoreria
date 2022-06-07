@@ -26,8 +26,8 @@ export class ReportsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.todayEs = this._helpers.todayEsStr();
-    this.todayEn = this._helpers.todayEnStr();
+    this.todayEs = this._helpers.dateEsStr();
+    this.todayEn = this._helpers.dateEnStr();
     this.selectedDate.setValue(this.todayEn);
     this.getTicketsToday();
   }

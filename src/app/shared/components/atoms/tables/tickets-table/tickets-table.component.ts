@@ -1,0 +1,113 @@
+import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { BehaviorSubject, Subscription, tap } from 'rxjs';
+import { Ticket } from 'src/app/core/models/ticket.model';
+import { User } from 'src/app/core/models/user.model';
+import { AlertService } from 'src/app/core/services/alert.service';
+import { HelpersService, STATUS, TYPE } from 'src/app/core/services/helpers.service';
+import { PrintService } from 'src/app/core/services/print.service';
+import { TicketService } from 'src/app/core/services/ticket.service';
+import { ModalDeleteTicketDialog } from 'src/app/tesoreria/components/modal-delete-ticket/modal-delete-ticket.dialog';
+
+@Component({
+  selector: 'app-tickets-table',
+  templateUrl: './tickets-table.component.html',
+  styleUrls: ['./tickets-table.component.scss']
+})
+export class TicketsTableComponent implements OnInit {
+  @Input() tickets!: Ticket[];
+  @Input() user!: User;
+  @Input() buttons: string[] = ['print', 'delete'];
+
+  displayedColumns = ['id', 'name', 'type', 'amount', 'action'];
+  public showTable = new BehaviorSubject<boolean>(false);
+  public todayEs = this._helpers.dateEsStr();
+  private _sub$: Subscription[] = [];
+
+  constructor(
+    private _ticket: TicketService,
+    private _print: PrintService,
+    private _dialog: MatDialog,
+    private _helpers: HelpersService,
+    private _alert: AlertService
+  ) { }
+
+  ngOnInit(): void {
+    this.showTable.next(this.tickets.length > 0 ? true : false);
+  }
+
+  rePrint(ticket: Ticket) {
+    this._print.print('designTicket', [ticket])
+  }
+
+  getType(type: string): string {
+    return this._helpers.getType(type, this.user.language);
+  }
+
+  openPopup(ticket: Ticket) {
+    this._sub$.push(
+      this._dialog.open(ModalDeleteTicketDialog, {
+      width: '250px',
+      data: { ticket }
+      })
+        .afterClosed()
+        .subscribe((res: boolean) => { if (res) this.cancelTicket(ticket) })
+    );
+
+  }
+
+  getTotalAmount(): number {
+    return this._helpers.getTotalActives(this.tickets);
+  }
+
+  cancelTicket(ticket: Ticket) {
+    this._sub$.push(
+      this._ticket.cancelTicket(ticket).pipe(
+        tap(
+          {
+            error: (error) => {
+              console.error(error);
+              this._alert.showAlert('No es posible anular el ticklet Nº' + ticket.id);
+            }
+          }
+        )
+      ).subscribe()
+    );
+  }
+
+  isCrossed(ticket: Ticket): string {
+
+    if (+ticket.status! === STATUS.ACTIVED || +ticket.status! === STATUS.CLOSED || +ticket.status! === STATUS.REPORTED) {
+      if ( ticket.type === TYPE.EGRESS) {
+        return 'egress';
+      } else if (ticket.type === TYPE.INGRESS || ticket.type === TYPE.TITHE || ticket.type === TYPE.OFFERING) {
+        return 'ingress';
+      } else {
+        return '';
+      }
+    }else if (+ticket.status! === STATUS.CANCEL) {
+      return 'crossed';
+    } else {
+      return '';
+    }
+  }
+
+  show(tickets: Ticket[]) {
+    const availableTickets = this._helpers.getActiveTickets(tickets);
+    return availableTickets.length > 0 ? true : false;
+  }
+
+  isCanceled(status:number): boolean{
+    return +status === STATUS.CANCEL ? true : false;
+  }
+
+  showBtn(name: string): boolean{
+    let result = this.buttons.find(btn => btn === name);
+    return result && result.length > 0 ? true : false;
+  }
+
+  ngOnDestroy(): void {
+    this._sub$.map((sub) => sub.unsubscribe());
+  }
+
+}
