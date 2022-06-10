@@ -21,7 +21,7 @@ export class TicketsTableComponent implements OnInit {
 
   displayedColumns = ['id', 'name', 'type', 'amount', 'action'];
   public showTable = new BehaviorSubject<boolean>(false);
-  public todayEs = this._helpers.dateEsStr();
+  public dayEs = this._helpers.dateEsStr();
   private _sub$: Subscription[] = [];
 
   constructor(
@@ -34,6 +34,7 @@ export class TicketsTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.showTable.next(this.tickets.length > 0 ? true : false);
+    this.dayEs = this._helpers.dateEsStr(new Date(this.tickets[0].createdAt));
   }
 
   rePrint(ticket: Ticket) {
@@ -47,8 +48,8 @@ export class TicketsTableComponent implements OnInit {
   openPopup(ticket: Ticket) {
     this._sub$.push(
       this._dialog.open(ModalDeleteTicketDialog, {
-      width: '250px',
-      data: { ticket }
+        width: '250px',
+        data: { ticket }
       })
         .afterClosed()
         .subscribe((res: boolean) => { if (res) this.cancelTicket(ticket) })
@@ -75,26 +76,21 @@ export class TicketsTableComponent implements OnInit {
     );
   }
 
-  isCrossed(ticket: Ticket): string {
+  isCrossed({status, type}: Ticket): string {
 
-    if (+ticket.status! === STATUS.ACTIVED || +ticket.status! === STATUS.CLOSED || +ticket.status! === STATUS.REPORTED) {
-      if ( ticket.type === TYPE.EGRESS) {
+    if (+status! === STATUS.ACTIVED || +status! === STATUS.CLOSED || +status! === STATUS.REPORTED) {
+      if ( type === TYPE.EGRESS) {
         return 'egress';
-      } else if (ticket.type === TYPE.INGRESS || ticket.type === TYPE.TITHE || ticket.type === TYPE.OFFERING) {
+      } else if (type === TYPE.INGRESS || type === TYPE.TITHE || type === TYPE.OFFERING) {
         return 'ingress';
       } else {
         return '';
       }
-    }else if (+ticket.status! === STATUS.CANCEL) {
+    }else if (+status! === STATUS.CANCEL) {
       return 'crossed';
     } else {
       return '';
     }
-  }
-
-  show(tickets: Ticket[]) {
-    const availableTickets = this._helpers.getActiveTickets(tickets);
-    return availableTickets.length > 0 ? true : false;
   }
 
   isCanceled(status:number): boolean{

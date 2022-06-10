@@ -1,9 +1,9 @@
-<table mat-table [dataSource]="tickets" *ngIf="show(tickets)">
+<table mat-table [dataSource]="tickets" *ngIf="tickets">
   <!-- Id Column -->
   <ng-container matColumnDef="id">
     <th mat-header-cell *matHeaderCellDef> Nº </th>
     <td mat-cell *matCellDef="let ticket" [ngClass]="isCrossed(ticket)"> {{ticket.id}} </td>
-    <td mat-footer-cell *matFooterCellDef>{{todayEs}}</td>
+    <td mat-footer-cell *matFooterCellDef>{{dayEs}}</td>
   </ng-container>
 
   <!-- name Column -->

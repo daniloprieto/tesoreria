@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { HelpersService } from './helpers.service';
+import { StorageService } from './storage.service';
 
-describe('HelpersService', () => {
-  let service: HelpersService;
+describe('StorageService', () => {
+  let service: StorageService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(HelpersService);
+    service = TestBed.inject(StorageService);
   });
 
   it('should be created', () => {

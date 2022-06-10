@@ -29,7 +29,6 @@ export class BalanzComponent implements OnInit {
     this._tickets.getCashClosingReports().subscribe(
       (reports) => {
         this.reports = reports;
-        console.log(this.reports);
       }
     )
   }
@@ -56,10 +55,7 @@ export class BalanzComponent implements OnInit {
           distinct(),
           tap(
             {
-              next: (tickets) => {
-                if (tickets.length > 0) this.openPopup(tickets);
-
-              },
+              next: (tickets) => { if(tickets.length > 0) this.openPopup(tickets)},
               error: (error) => {
                 console.error(error);
                 this._alert.showAlert('Error al recuperar la lista de tickets');
@@ -85,5 +81,6 @@ export class BalanzComponent implements OnInit {
   ngOnDestroy(): void {
     this._sub$.map(sub => sub.unsubscribe());
   }
+
 
 }

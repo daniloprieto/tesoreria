@@ -7,7 +7,7 @@ import { AlertService } from '../../../core/services/alert.service';
 import { PrintService } from '../../../core/services/print.service';
 import { Validators, FormBuilder } from '@angular/forms';
 import { TYPE } from '../../../core/services/helpers.service';
-import { Subscription } from 'rxjs';
+import { Subscription, distinct, tap } from 'rxjs';
 
 
 @Component({
@@ -50,15 +50,14 @@ export class IngressTithesAndOffersComponent implements OnInit {
   setTicket(event: any) {
     event.preventDefault();
 
-    let n = this.ticketForm.get('name')?.value;
-    let l = this.ticketForm.get('lastName')?.value;
+    const form = this.ticketForm;
 
-    let name = this.formatterStrings(n);
-    let lastName = this.formatterStrings(l);
-    let digital = this.ticketForm.get('isDigital')?.value ? 1 : 0;
+    let name = this.formatterStrings(form.get('name')?.value);
+    let lastName = this.formatterStrings(form.get('lastName')?.value);
+    let digital = form.get('isDigital')?.value ? 1 : 0;
     let treasurer = this.user.id;
 
-    if (this.ticketForm.invalid) {
+    if (form.invalid) {
 
       this._alert.showAlert('Debe ingresar nombre y apellido');
 
@@ -72,27 +71,27 @@ export class IngressTithesAndOffersComponent implements OnInit {
         type: '',
       };
 
-      if (this.ticketForm.get('tithe')?.value <= 0 && this.ticketForm.get('offering')?.value <= 0) {
+      if (form.get('tithe')?.value <= 0 && form.get('offering')?.value <= 0) {
 
         this._alert.showAlert('Debe ingresar al menos un valor');
 
       } else {
 
-        if (this.ticketForm.get('tithe')?.value > 0) {
+        if (form.get('tithe')?.value > 0) {
           tickets.push(
             {
               ...ticket,
-              amount: this.ticketForm.get('tithe')?.value,
+              amount: form.get('tithe')?.value,
               type: TYPE.TITHE
             }
           )
         }
 
-        if (this.ticketForm.get('offering')?.value > 0) {
+        if (form.get('offering')?.value > 0) {
           tickets.push(
             {
               ...ticket,
-              amount: this.ticketForm.get('offering')?.value,
+              amount: form.get('offering')?.value,
               type: TYPE.OFFERING
             }
           )
@@ -113,20 +112,23 @@ export class IngressTithesAndOffersComponent implements OnInit {
     tickets.map((ticket, index) => {
       this._sub$.push(
         this._ticket.generateTicket(ticket)
-          .subscribe({
-            next: (res) => {
-              console.log('new id', res)
-              ticket.id = res.id;
-              savedTickets.push(ticket);
-              if ((index + 1) === tickets.length) {
-                if (this._print.print('designTicket', savedTickets)) this.reset();
+          .pipe(
+            distinct(),
+            tap({
+              next: ({ id }) => {
+                ticket.id = id;
+                savedTickets.push(ticket);
+                if ((index + 1) === tickets.length) {
+                  if (this._print.print('designTicket', savedTickets)) this.reset();
+                }
+              },
+              error: (error) => {
+                this._alert.showAlert('Error al guardar el Ticket');
+                console.error(error);
               }
-            },
-            error: (error) => {
-              this._alert.showAlert('Error al guardar el Ticket');
-              console.error(error);
-            }
-          })
+            })
+          )
+          .subscribe()
       );
     })
 

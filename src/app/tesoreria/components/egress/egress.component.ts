@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subscription, distinct, tap } from 'rxjs';
 import { TicketBase } from 'src/app/core/models/ticket.model';
 import { User } from 'src/app/core/models/user.model';
 import { AlertService } from 'src/app/core/services/alert.service';
@@ -41,15 +41,17 @@ export class EgressComponent implements OnInit {
   setTicket(event: any) {
     event.preventDefault();
 
-    if (this.financialForm.valid) {
+    const form = this.financialForm
 
-      if (this.financialForm.get('amount')?.value > 0) {
+    if (form.valid) {
+
+      if (form.get('amount')?.value > 0) {
 
         let ticket: TicketBase = {
-          amount: this.financialForm.get('amount')?.value,
+          amount: form.get('amount')?.value,
           type: TYPE.EGRESS,
-          description: this.financialForm.get('description')?.value,
-          digital: this.financialForm.get('isDigital')?.value ? 1 : 0,
+          description: form.get('description')?.value,
+          digital: form.get('isDigital')?.value ? 1 : 0,
           treasurer: this.user.id,
           name: '',
           lastName: '',
@@ -69,16 +71,22 @@ export class EgressComponent implements OnInit {
   saveTicket(ticket: TicketBase) {
     this._sub$.push(
       this._ticket.generateTicket(ticket)
-        .subscribe({
-          next: (res) => {
-            ticket.id = res.id;
-            if (this._print.print('designTicketEgress', ticket)) this.reset();
-          },
-          error: (error) => {
-            this._alert.showAlert('Error al guardar el Ticket');
-            console.error(error);
+        .pipe(
+          distinct(),
+          tap({
+            next: ({ id }) => {
+              ticket.id = id;
+              if (this._print.print('designTicketEgress', ticket)) this.reset();
+            },
+            error: (error) => {
+              this._alert.showAlert('Error al guardar el Ticket');
+              console.error(error);
+            }
           }
-        })
+
+          )
+        )
+        .subscribe()
     );
 
   }

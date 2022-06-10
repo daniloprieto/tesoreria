@@ -3,7 +3,7 @@ import { User } from '../models/user.model';
 import { AuthService } from './auth.service';
 import { Ticket, TicketBase, CashClosingAmounts, CashClosingInfo, Report } from '../models/ticket.model';
 import { HttpCustomService } from './http-custom.service';
-import { Observable, tap, Subject, concatMap, BehaviorSubject, map, from, mergeMap, switchMap } from 'rxjs';
+import { Observable, tap, Subject, concatMap, BehaviorSubject, map, from, mergeMap, switchMap, filter } from 'rxjs';
 import { HelpersService, STATUS, TYPE } from './helpers.service';
 import { PrintService } from './print.service';
 
@@ -71,8 +71,10 @@ export class TicketService {
       this._http.post(path, body)
       .subscribe({
         next: (tickets:Ticket[]) => {
-          let t = tickets.filter(t => t.headquarter === this.user.headquarter);
+
+          let t = tickets.filter(t => (t.headquarter === this.user.headquarter));
           this.ticketsToday$.next(t);
+
         },
         error: (error) => {
           this.ticketsToday$.error(error);
@@ -96,13 +98,13 @@ export class TicketService {
 
     this.getTicketsForDate(date)
       .pipe(
-        concatMap((tickets) => this.getCashClosingInfo(this._helpers.getTotalActives(tickets))),
+        concatMap((tickets) => this.getCashClosingInfo(this._helpers.getTotalActives(tickets.filter(t => t.status === STATUS.ACTIVED)))),
         tap((res) => cashClosingAmounts = res.cashClosingAmounts),
         switchMap(res => from(res.cashClosingTickets)),
         switchMap(ticket => this.generateTicket(ticket)),
         concatMap(() => this.getTicketsForDate(date)),
         tap((tickets) => allTickets = tickets),
-        switchMap(tickets => from(tickets.filter(t => Number(t.status) === 1))),
+        switchMap(tickets => from(tickets.filter(t => +t.status! === 1))),
         switchMap(ticket => this.closeTicket(ticket)),
         tap(res => this._print.printCashClosing(allTickets, cashClosingAmounts, date)),
         concatMap(() => this.getTicketsForDate(date)),
@@ -134,23 +136,21 @@ export class TicketService {
       name: '',
       lastName: '',
       treasurer: this.user.id,
-      digital: 0
+      digital: 0,
+      status: STATUS.REPORTED,
+      type: TYPE.EGRESS,
     }
 
     let cashClosingTickets: TicketBase[] = [
       {
         ...data,
-        status: STATUS.REPORTED,
         description: 'Diezmo Iglesia ' + this.user.headquarter + ' ' + this._helpers.dateEsStr(),
         amount: headquarterTithe,
-        type: TYPE.EGRESS,
       },
       {
         ...data,
-        status: STATUS.REPORTED,
         description: 'Oficio del pastor ' + this.user.headquarter + ' ' + this._helpers.dateEsStr(),
         amount: pastorService,
-        type: TYPE.EGRESS,
       },
       {
         ...data,

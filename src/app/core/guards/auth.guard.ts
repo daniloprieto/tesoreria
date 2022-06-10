@@ -1,14 +1,19 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable, tap, BehaviorSubject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { User } from '../models/user.model';
 import { AuthService } from '../services/auth.service';
+import { StorageService } from '../services/storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(private _auth: AuthService, private _router: Router){}
+  constructor(
+    private _auth: AuthService,
+    private _router: Router,
+  ) { }
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
@@ -19,7 +24,7 @@ export class AuthGuard implements CanActivate {
     .pipe(
       tap(
         (user: User) => {
-          logged.next(!user.name || !user.role ? false : true);
+          logged.next(!user || !user.role ? false : true);
           if (!logged.value) this._router.navigate(['/auth']);
         }
       )

@@ -43,11 +43,23 @@ export class HelpersService {
 
   getTotalActives(tickets: Ticket[]): number {
     let ingress = tickets
-      .map(t => (Number(t.status) === STATUS.ACTIVED || Number(t.status) === STATUS.REPORTED) && (t.type !== TYPE.EGRESS) ? Number(t.amount) : 0)
+      .map(t => (
+        +t.status! === STATUS.ACTIVED
+        || +t.status! === STATUS.CLOSED
+        || +t.status! === STATUS.REPORTED)
+        && (t.type !== TYPE.EGRESS)
+            ? +t.amount
+            : 0)
       .reduce((acc, value) => acc + value, 0);
 
     let egress = tickets
-      .map(t => (Number(t.status) === STATUS.ACTIVED || Number(t.status) === STATUS.REPORTED) && (t.type === TYPE.EGRESS) ? Number(t.amount) : 0)
+      .map(t => (
+        +t.status! === STATUS.ACTIVED
+        || +t.status! === STATUS.CLOSED
+        || +t.status! === STATUS.REPORTED)
+        && (t.type === TYPE.EGRESS)
+            ? +t.amount
+            : 0)
       .reduce((acc, value) => acc + value, 0);
 
     return (ingress - egress);

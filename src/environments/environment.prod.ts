@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  api: 'http://www.api.iglesiagilgal.com.ar/'
+  api: 'http://www.api.iglesiagilgal.com.ar/',
+  hashCode: 'k',
 };

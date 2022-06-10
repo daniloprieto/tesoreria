@@ -94,18 +94,20 @@ export class PrintService {
 
     return view;
   }
-  designTicketIngress(ticket: TicketBase):any {
+  designTicketIngress(ticket: TicketBase): any {
 
-    let controlLine = '<span style="font-size:10px">Ticket Nº:' + ticket.id + ' ';
-    let controlData = ticket.digital > 0 ? controlLine + 'Ingreso Digital' : controlLine + 'Ingreso Efectivo';
+    const { id, digital, amount, description } = ticket;
+
+    let controlLine = '<span style="font-size:10px">Ticket Nº:' + id + ' ';
+    let controlData = digital > 0 ? controlLine + 'Ingreso Digital' : controlLine + 'Ingreso Efectivo';
 
     let leafDesign = [
       '<html lang="es"><body style="font-family: monospace, monospace !important;font-size:14px !important">',
       controlData,
       '<div style="width:250px">',
       '<h5>Iglesia Centro de Adoración Gilgal</h5>',
-      '<span>Recibimos la suma de: <br>$' + ticket.amount + '</span><br>',
-      '<span>en concepto de: <br>' + ticket.description + '</span><br>',
+      '<span>Recibimos la suma de: <br>$' + amount + '</span><br>',
+      '<span>en concepto de: <br>' + description + '</span><br>',
       '<br><span> Tesorero ' + this.user.name + '</span><br><br>',
       '<div>'+ this.disclaimer +'</div><br>',
       '</div>',
@@ -118,18 +120,21 @@ export class PrintService {
 
     return view;
   }
-  designTicketEgress(ticket: TicketBase):any {
 
-    let controlLine = '<span style="font-size:10px">Ticket Nº:' + ticket.id + ' ';
-    let controlData = ticket.digital > 0 ? controlLine + 'Egreso Digital' : controlLine + 'Egreso Efectivo';
+  designTicketEgress(ticket: TicketBase): any {
+
+    const { id, digital, amount, description } = ticket;
+
+    let controlLine = '<span style="font-size:10px">Ticket Nº:' + id + ' ';
+    let controlData = digital > 0 ? controlLine + 'Egreso Digital' : controlLine + 'Egreso Efectivo';
 
     let leafDesign = [
       '<html lang="es"><body style="font-family: monospace, monospace !important;font-size:14px !important">',
       controlData,
       '<div style="width:250px">',
       '<h5>Iglesia Centro de Adoración Gilgal</h5>',
-      '<span>Se entrega la suma de: <br>$' + ticket.amount + '</span><br>',
-      '<span>en concepto de: <br>' + ticket.description + '</span><br>',
+      '<span>Se entrega la suma de: <br>$' + amount + '</span><br>',
+      '<span>en concepto de: <br>' + description + '</span><br>',
       '<br><span> Tesorero ' + this.user.name + '</span><br><br>',
       '<div>'+ this.disclaimer +'</div><br>',
       '</div>',
@@ -204,17 +209,20 @@ export class PrintService {
 
     }
 
-    function createRow(ticket:Ticket): string[]{
-      let digital = ticket.digital > 0 ? 'D' : 'E';
-      let name = ticket.name.slice(0, 1) + '. ' + (ticket.lastName.length > 6 ? (ticket.lastName.slice(0,5) + '.' ): ticket.lastName);
+    function createRow(ticket: Ticket): string[]{
+
+      const { id, name:nameSrc, lastName, digital:digitalSrc, amount, treasurer } = ticket;
+
+      let digital = digitalSrc > 0 ? 'D' : 'E';
+      let name = nameSrc.slice(0, 1) + '. ' + (lastName.length > 6 ? (lastName.slice(0,5) + '.' ): lastName);
 
       let rowDesign = [
         '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
-        '<td>' + ticket.id + '</td>',
+        '<td>' + id + '</td>',
         '<td>' + digital + '</td>',
         '<td>' + name + '</td>',
-        '<td style="text-align:right">$' + ticket.amount + '</td>',
-        '<td>' + ticket.treasurer + '</td>',
+        '<td style="text-align:right">$' + amount + '</td>',
+        '<td>' + treasurer + '</td>',
         '</tr>'
       ];
 
@@ -304,6 +312,8 @@ export class PrintService {
 
   printCashClosing(tickets: Ticket[], cashClosingAmounts: CashClosingAmounts, date: string) {
 
+    const { headquarterGain, headquarterTithe, pastorGain } = cashClosingAmounts;
+
     let view = this.designReport(tickets.filter(t => Number(t.status) === 3), date);
 
     let cashClosingTable = [
@@ -315,15 +325,15 @@ export class PrintService {
       '</tr>',
       '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
       '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">Caja Iglesia</td>',
-      '<td style="text-align:right">$' + cashClosingAmounts.headquarterGain + '</td>',
+      '<td style="text-align:right">$' + headquarterGain + '</td>',
       '</tr>',
       '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
       '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">Relatorio</td>',
-      '<td style="text-align:right">$' + cashClosingAmounts.headquarterTithe + '</td>',
+      '<td style="text-align:right">$' + headquarterTithe + '</td>',
       '</tr>',
       '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
       '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">Oficio Pastor</td>',
-      '<td style="text-align:right">$' + cashClosingAmounts.pastorGain + '</td>',
+      '<td style="text-align:right">$' + pastorGain + '</td>',
       '</tr>',
       '</table>'];
 

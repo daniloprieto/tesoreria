@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { Validators, FormBuilder } from '@angular/forms';
 import { TicketBase } from 'src/app/core/models/ticket.model';
 import { User } from 'src/app/core/models/user.model';
 import { AlertService } from 'src/app/core/services/alert.service';
@@ -7,7 +7,7 @@ import { TYPE } from 'src/app/core/services/helpers.service';
 import { PrintService } from 'src/app/core/services/print.service';
 import { TicketService } from 'src/app/core/services/ticket.service';
 import { AuthService } from '../../../core/services/auth.service';
-import { Subscription } from 'rxjs';
+import { Subscription, tap, distinct } from 'rxjs';
 
 @Component({
   selector: 'app-ingress',
@@ -40,16 +40,17 @@ export class IngressComponent implements OnInit {
 
   setTicket(event: any) {
     event.preventDefault();
+    const form = this.financialForm;
 
-    if (this.financialForm.valid) {
+    if (form.valid) {
 
-      if (this.financialForm.get('amount')?.value > 0) {
+      if (form.get('amount')?.value > 0) {
 
         let ticket: TicketBase = {
-          amount: this.financialForm.get('amount')?.value,
+          amount: form.get('amount')?.value,
           type: TYPE.INGRESS,
-          description: this.financialForm.get('description')?.value,
-          digital: this.financialForm.get('isDigital')?.value ? 1 : 0,
+          description: form.get('description')?.value,
+          digital: form.get('isDigital')?.value ? 1 : 0,
           treasurer: this.user.id,
           name: '',
           lastName: '',
@@ -69,16 +70,19 @@ export class IngressComponent implements OnInit {
   saveTicket(ticket: TicketBase) {
     this._sub$.push(
       this._ticket.generateTicket(ticket)
-        .subscribe({
-          next: (res) => {
-            ticket.id = res.id;
-            if (this._print.print('designTicketIngress', ticket)) this.reset();
-          },
-          error: (error) => {
-            this._alert.showAlert('Error al guardar el Ticket');
-            console.error(error);
-          }
-        })
+        .pipe(
+          distinct(),
+          tap({
+            next: ({ id }) => {
+              ticket.id = id;
+              if (this._print.print('designTicketIngress', ticket)) this.reset();
+            },
+            error: (error) => {
+              this._alert.showAlert('Error al guardar el Ticket');
+              console.error(error);
+            }
+          })
+        ).subscribe()
     );
 
   }
