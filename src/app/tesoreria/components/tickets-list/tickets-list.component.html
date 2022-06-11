@@ -1,16 +1,14 @@
-<div class="custom__modal">
-  <div class="container mat-elevation-z8">
-    <ng-container *ngIf="tickets.length ; then table else notFound"></ng-container>
-  </div>
-</div>
+  <ng-container *ngIf="tickets.length ; then table else notFound"></ng-container>
 
 
 <ng-template #table>
-  <app-tickets-table
-    [user]="user"
-    [buttons]="['print', 'delete']"
-    [tickets]="tickets">
-  </app-tickets-table>
+  <div class="container__table">
+    <app-tickets-table
+      [user]="user"
+      [buttons]="['print', 'delete']"
+      [tickets]="tickets">
+    </app-tickets-table>
+  </div>
 </ng-template>
 
 <ng-template #notFound>

@@ -18,6 +18,7 @@ export interface Ticket extends TicketBase{
 }
 
 export interface CashClosingAmounts{
+  totalIngress: number;
   headquarterTreasure: number;
   headquarterTithe: number;
   headquarterGain: number;

@@ -1,8 +1,22 @@
-.header{
-  width: 100vw;
-  height: 75px;
+:host{
+  min-width: 100%;
 }
-img{
+.header__grid{
+  display: grid;
+  width: 100%;
+  height: 75px;
+  grid-template-areas: "img clearfix button";
+  grid-template-columns: 170px 1fr 170px;
+}
+
+.header__grid__img{
+  grid-area:img;
   width:170px;
   height: auto;
+}
+
+.header__grid__button{
+  grid-area: button;
+  align-items: center;
+  justify-self: end;
 }

@@ -1,6 +1,6 @@
 <div class="row">
-  <div class="col mb-3">
-    <div class="custom__modal" id="form-view">
+  <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+    <div class="mb-3 box">
       <mat-tab-group>
         <mat-tab label="Diezmos / ofrendas">
           <app-ingress-tithes-and-offers></app-ingress-tithes-and-offers>
@@ -14,10 +14,16 @@
       </mat-tab-group>
     </div>
   </div>
-  <div class="col mb-3">
-    <app-tickets-list [user]="user"></app-tickets-list>
+  <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+    <div class="mb-3 box">
+      <app-tickets-list [user]="user"></app-tickets-list>
+    </div>
   </div>
 </div>
 <div class="row">
-  <app-reports></app-reports>
+  <div class="col-12">
+    <div class="footer">
+      <app-reports></app-reports>
+    </div>
+  </div>
 </div>

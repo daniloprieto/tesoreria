@@ -1,4 +1,13 @@
-#form-view{
-  height: 435px;
+@import '../../../../styles.scss';
+
+.box{
+  @extend .custom__modal;
+  padding: 1.25rem 1.25rem;
+  height: 50vh;
+  max-height: 450px;
 }
 
+.footer{
+  @extend .custom__modal;
+  padding: 1.25rem 3rem;
+}

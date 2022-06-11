@@ -5,18 +5,8 @@
   box-sizing: border-box;
 }
 
-.header{
-  width: 100vw;
-  position: fixed;
-  z-index: 99;
-  top:5px;
-  padding: 0% 4%;
-  background-color: $color-primary;
-  filter: $shadow;
+.cont{
+  margin: auto auto;
 }
 
-.cont{
-  width: 100vw;
-  padding: 0% 4%;
-  margin-top: 15vh;
-}
+

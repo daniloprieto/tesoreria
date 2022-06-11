@@ -42,8 +42,6 @@ export class StorageService {
 
     const expired: number = 24;
 
-    console.log(this.encrypt(data))
-
     this.local.set(key, this.encrypt(data), expired, 'h');
 
   }

@@ -4,3 +4,9 @@
   height: 340px;
   overflow: auto;
 }
+
+.container__table{
+  overflow-x:hidden;
+  overflow-y:scroll;
+  max-height: 100%;
+}
