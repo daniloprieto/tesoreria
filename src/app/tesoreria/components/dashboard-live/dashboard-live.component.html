@@ -1,29 +1,41 @@
-<div class="row">
-  <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-    <div class="mb-3 box">
-      <mat-tab-group>
-        <mat-tab label="Diezmos / ofrendas">
-          <app-ingress-tithes-and-offers></app-ingress-tithes-and-offers>
-        </mat-tab>
-        <mat-tab label="Ingreso">
-          <app-ingress></app-ingress>
-        </mat-tab>
-        <mat-tab label="Egreso">
-          <app-egress></app-egress>
-        </mat-tab>
-      </mat-tab-group>
+<ng-container *ngIf="isLoading | async then loading; else layout"></ng-container>
+
+<ng-template #layout>
+  <div class="row">
+    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+      <div class="mb-3 box">
+        <mat-tab-group>
+          <mat-tab label="Diezmos / ofrendas">
+            <app-ingress-tithes-and-offers></app-ingress-tithes-and-offers>
+          </mat-tab>
+          <mat-tab label="Ingreso">
+            <app-ingress></app-ingress>
+          </mat-tab>
+          <mat-tab label="Egreso">
+            <app-egress></app-egress>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+      <div class="mb-3 box">
+        <app-tickets-list [user]="user"></app-tickets-list>
+      </div>
     </div>
   </div>
-  <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-    <div class="mb-3 box">
-      <app-tickets-list [user]="user"></app-tickets-list>
+  <div class="row">
+    <div class="col-12">
+      <div class="footer">
+        <app-reports></app-reports>
+      </div>
     </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-12">
-    <div class="footer">
-      <app-reports></app-reports>
-    </div>
+</ng-template>
+
+
+<ng-template #loading>
+  <div class="container">
+    <mat-spinner></mat-spinner>
   </div>
-</div>
+</ng-template>
+

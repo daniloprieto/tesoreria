@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Ticket, TicketBase, CashClosingAmounts } from '../models/ticket.model';
 import { User } from '../models/user.model';
 import { AuthService } from './auth.service';
-import { HelpersService, TYPE } from './helpers.service';
+import { HelpersService, TYPE, STATUS } from './helpers.service';
 
 @Injectable({
   providedIn: 'root'
@@ -152,10 +152,14 @@ export class PrintService {
 
     let totalTithesCash = 0;
     let totalOfferingsCash = 0;
+    let totalIngressCash = 0;
+    let totalEgressCash = 0;
     let totalCash = 0;
 
     let totalTithesDigital = 0;
     let totalOfferingsDigital = 0;
+    let totalIngressDigital = 0;
+    let totalEgressDigital = 0;
     let totalDigital = 0;
 
     let total = 0;
@@ -166,6 +170,8 @@ export class PrintService {
 
       let tithes: Ticket[] = [];
       let offerings: Ticket[] = [];
+      let ingress: Ticket[] = [];
+      let egress: Ticket[] = [];
 
       tickets.map((ticket: Ticket) => {
         switch (ticket.type) {
@@ -175,19 +181,42 @@ export class PrintService {
           case TYPE.OFFERING:
             offerings.push(ticket);
             break;
+          case TYPE.INGRESS:
+            ingress.push(ticket);
+            break;
+          case TYPE.EGRESS:
+            egress.push(ticket);
+            break;
         }
       });
 
       let tableTithes = tithes.length > 0 ? createTable(TYPE.TITHE, tithes) : [];
       let tableOfferings = offerings.length > 0 ? createTable(TYPE.OFFERING, offerings) : [];
+      let tableIngress = ingress.length > 0 ? createTable(TYPE.INGRESS, ingress) : [];
+      let tableEgress = egress.length > 0 ? createTable(TYPE.EGRESS, egress) : [];
 
-      return showDesign(tableTithes, tableOfferings);
+      return showDesign(tableTithes, tableOfferings, tableIngress, tableEgress);
 
     }
 
     function createTable(type: string, tickets: Ticket[]) {
 
-      let selected = type === TYPE.TITHE ? 'Diezmos' : 'Ofrendas';
+      let selected = '';
+
+      switch (type) {
+        case TYPE.TITHE:
+          selected = 'Diezmos';
+          break;
+        case TYPE.OFFERING:
+          selected = 'Ofrendas';
+          break;
+        case TYPE.INGRESS:
+          selected = 'Otros Ingresos';
+          break;
+        case TYPE.EGRESS:
+          selected = 'Egresos';
+          break;
+      };
 
       let table = [
         '<table><tr style="font-family: monospace, monospace !important;font-size:12px !important">',
@@ -214,13 +243,17 @@ export class PrintService {
       const { id, name:nameSrc, lastName, digital:digitalSrc, amount, treasurer } = ticket;
 
       let digital = digitalSrc > 0 ? 'D' : 'E';
-      let name = nameSrc.slice(0, 1) + '. ' + (lastName.length > 6 ? (lastName.slice(0,5) + '.' ): lastName);
+
+
+      let text = ticket.type === TYPE.OFFERING || ticket.type === TYPE.OFFERING
+        ? nameSrc.slice(0, 1) + '. ' + (lastName.length > 6 ? (lastName.slice(0, 5) + '.') : lastName)
+        : ticket.description?.slice(0, 5);
 
       let rowDesign = [
         '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
         '<td>' + id + '</td>',
         '<td>' + digital + '</td>',
-        '<td>' + name + '</td>',
+        '<td>' + text + '</td>',
         '<td style="text-align:right">$' + amount + '</td>',
         '<td>' + treasurer + '</td>',
         '</tr>'
@@ -230,7 +263,8 @@ export class PrintService {
 
     }
 
-    function showDesign(tableTithes: string[], tableOfferings: string[]) {
+    function showDesign(tableTithes: string[], tableOfferings: string[], tableIngress: string[], tableEgress: string[]) {
+
       let dNow = new Date(date);
       let dateLocal = dNow.getDate()  + '/' + (dNow.getMonth() + 1) + '/' + dNow.getFullYear();
 
@@ -247,6 +281,8 @@ export class PrintService {
       model.map((line) => view.document.write(line));
       tableTithes.map((line) => view.document.write(line));
       tableOfferings.map((line) => view.document.write(line));
+      tableIngress.map((line) => view.document.write(line));
+      tableEgress.map((line) => view.document.write(line));
 
 
       let tableTotals = [
@@ -270,10 +306,16 @@ export class PrintService {
         '<td style="text-align:right"><strong>$' + (totalOfferingsCash + totalOfferingsDigital) + '</strong></td>',
         '</tr>',
         '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
-        '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">Total</td>',
-        '<td style="text-align:right">$' + totalCash + '</td>',
-        '<td style="text-align:right">$' + totalDigital + '</td>',
-        '<td style="text-align:right"><strong>$' + (totalCash + totalDigital) + '</strong></td>',
+        '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">Otros ingresos</td>',
+        '<td style="text-align:right">$' + totalIngressCash + '</td>',
+        '<td style="text-align:right">$' + totalIngressDigital + '</td>',
+        '<td style="text-align:right"><strong>$' + (totalIngressCash + totalIngressDigital) + '</strong></td>',
+        '</tr>',
+        '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
+        '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">Egresos</td>',
+        '<td style="text-align:right">$' + totalEgressCash + '</td>',
+        '<td style="text-align:right">$' + totalEgressDigital + '</td>',
+        '<td style="text-align:right"><strong>$' + (totalEgressCash + totalEgressDigital) + '</strong></td>',
         '</tr>',
         '</table>',
         '<br><br><br>',
@@ -290,20 +332,30 @@ export class PrintService {
     function calculateTotals(type: string, digital: number, amount: number) {
 
       switch (type) {
-        case 'tithe':
+        case TYPE.TITHE:
           digital > 0
-            ? totalTithesDigital += Number(amount)
-            : totalTithesCash += Number(amount);
+            ? totalTithesDigital += +amount
+            : totalTithesCash += +amount;
           break;
-        case 'offering':
+        case TYPE.OFFERING:
           digital > 0
-          ? totalOfferingsDigital += Number(amount)
-          : totalOfferingsCash += Number(amount);
+          ? totalOfferingsDigital += +amount
+          : totalOfferingsCash += +amount;
+          break;
+        case TYPE.INGRESS:
+          digital > 0
+            ? totalIngressDigital += +amount
+            : totalIngressCash += +amount;
+          break;
+        case TYPE.EGRESS:
+          digital > 0
+          ? totalEgressDigital += +amount
+          : totalEgressCash += +amount;
           break;
       }
 
-      totalCash = totalTithesCash + totalOfferingsCash;
-      totalDigital = totalTithesDigital + totalOfferingsDigital;
+      totalCash = ( totalTithesCash + totalOfferingsCash + totalIngressCash ) - totalEgressCash;
+      totalDigital = ( totalTithesDigital + totalOfferingsDigital + totalIngressDigital ) - totalEgressDigital;
       total = totalCash + totalDigital;
 
     }
@@ -312,9 +364,9 @@ export class PrintService {
 
   printCashClosing(tickets: Ticket[], cashClosingAmounts: CashClosingAmounts, date: string) {
 
-    const { headquarterGain, headquarterTithe, pastorGain } = cashClosingAmounts;
+    const { totalIngress, headquarterGain, headquarterTithe, pastorGain } = cashClosingAmounts;
 
-    let view = this.designReport(tickets.filter(t => Number(t.status) === 3), date);
+    let view = this.designReport(tickets.filter(t => Number(t.status) === STATUS.CLOSED), date);
 
     let cashClosingTable = [
       '<br><br><br>',
@@ -322,6 +374,10 @@ export class PrintService {
       '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
       '<th style="border: 0.5px solid black">Cierre de Caja</th>',
       '<th style="border: 0.5px solid black">TOTAL</th>',
+      '</tr>',
+      '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
+      '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">Total Ingresos</td>',
+      '<td style="text-align:right">$' + totalIngress + '</td>',
       '</tr>',
       '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
       '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">Caja Iglesia</td>',

@@ -9,6 +9,8 @@ import { MatTableModule } from '@angular/material/table'
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 
 @NgModule({
   declarations: [],
@@ -23,7 +25,9 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatTableModule,
     MatDatepickerModule,
     MatFormFieldModule,
-    MatTabsModule ],
+    MatTabsModule,
+    MatProgressSpinnerModule
+   ],
   exports: [
     FormsModule,
     ReactiveFormsModule,
@@ -34,7 +38,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatTableModule,
     MatDatepickerModule,
     MatFormFieldModule,
-    MatTabsModule
+    MatTabsModule,
+    MatProgressSpinnerModule
   ]
 })
 export class CoreModule { }

@@ -3,7 +3,7 @@ import { User } from '../models/user.model';
 import { AuthService } from './auth.service';
 import { Ticket, TicketBase, CashClosingAmounts, CashClosingInfo, Report } from '../models/ticket.model';
 import { HttpCustomService } from './http-custom.service';
-import { Observable, tap, Subject, concatMap, BehaviorSubject, debounce, timer, from, mergeMap, switchMap, filter, distinct, last, map } from 'rxjs';
+import { Observable, tap, take ,Subject, concatMap, BehaviorSubject, debounce, timer, from, mergeMap, switchMap, filter, distinct, last, map, debounceTime } from 'rxjs';
 import { HelpersService, STATUS, TYPE } from './helpers.service';
 import { PrintService } from './print.service';
 
@@ -14,6 +14,7 @@ export class TicketService {
 
   public user!: User;
   public ticketsToday$ = new Subject<Ticket[]>();
+  public loading = new BehaviorSubject<boolean>(false);
 
   constructor(
     private _auth: AuthService,
@@ -53,6 +54,7 @@ export class TicketService {
   }
 
   closeTicket(ticket: Ticket): Observable<any> {
+
     ticket.status = STATUS.CLOSED;
     ticket.treasurer = this.user.id;
 
@@ -96,19 +98,28 @@ export class TicketService {
     let cashClosingAmounts: CashClosingAmounts;
     let allTickets: Ticket[];
 
+    this.loading.next(true);
+
     this.getTicketsForDate(date)
       .pipe(
         concatMap((tickets) => this.getCashClosingInfo(this._helpers.getTotalActives(tickets))),
-        tap((res) => { if( res.cashClosingAmounts.totalIngress > 0) cashClosingAmounts = res.cashClosingAmounts } ),
+        tap((res) => { if (res.cashClosingAmounts.totalIngress > 0) cashClosingAmounts = res.cashClosingAmounts }),
         switchMap(res => from(res.cashClosingTickets)),
         mergeMap(ticket => this.generateTicket(ticket)),
         switchMap(() => this.ticketsToday$),
-        tap((tickets) => allTickets = tickets), //revisar
+        debounceTime(1000),
+        take(1),
+        tap(tickets => allTickets = tickets),
         switchMap(tickets => from(tickets)),
-        switchMap(ticket => this.closeTicket(ticket)), // revisar
-        // tap(res => this._print.printCashClosing(allTickets, cashClosingAmounts, date)), // revisar
-        // concatMap(() => this.getTicketsForDate(date)), // revisar
-        // switchMap((tickets) => this.saveCashClosingReport(tickets, cashClosingAmounts)) // revisar
+        filter(t => +t.status! === STATUS.ACTIVED),
+        distinct(),
+        mergeMap(ticket => this.closeTicket(ticket)),
+        debounceTime(1000),
+        take(1),
+        switchMap(() => this.getTicketsForDate(date)),
+        tap((tickets) => this._print.printCashClosing(tickets, cashClosingAmounts, date)),
+        switchMap((tickets) => this.saveCashClosingReport(tickets, cashClosingAmounts)),
+        tap(() => this.loading.next(false))
       )
       .subscribe();
   }

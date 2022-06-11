@@ -5,7 +5,6 @@ import { HeaderComponent } from './components/header/header.component';
 import { CoreModule } from '../core/core.module';
 import { TicketsTableComponent } from './components/atoms/tables/tickets-table/tickets-table.component';
 
-
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -13,7 +12,7 @@ import { TicketsTableComponent } from './components/atoms/tables/tickets-table/t
   ],
   imports: [
     CommonModule,
-    CoreModule
+    CoreModule,
   ],
   exports: [
     HeaderComponent,
