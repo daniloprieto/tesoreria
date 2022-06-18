@@ -1,15 +1,10 @@
 <h1 mat-dialog-title>Cierre de caja {{ data.tickets[0].createdAt | date }}</h1>
 
-<mat-dialog-content>
-  <app-tickets-table
-    [user]="user"
-    [buttons]="['print']"
-    [tickets]="data.tickets">
+<mat-dialog-content class="container__table">
+  <app-tickets-table [user]="user" [buttons]="['print']" [tickets]="data.tickets">
   </app-tickets-table>
 </mat-dialog-content>
 
-<mat-dialog-actions  align = "end">
-  <button  mat-button  mat-dialog-close> Salir </button>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close> Salir </button>
 </mat-dialog-actions>
-
-

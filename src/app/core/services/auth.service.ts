@@ -49,6 +49,7 @@ export class AuthService {
   logout(){
     this.user.next({} as User);
     this._storage.clear();
+    this._router.navigate(['//auth']);
   }
 
   setSession(user: string, password: string) {

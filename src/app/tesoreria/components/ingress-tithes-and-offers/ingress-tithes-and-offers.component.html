@@ -1,36 +1,42 @@
 <div class="container">
   <form [formGroup]="ticketForm">
-    <div class="form-check mt-2 mb-2">
-      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" formControlName="isDigital">
-      <label class="form-check-label" for="flexCheckDefault">
-        Digital
-      </label>
+    <div>
+      <div class="form-check mt-2 mb-2">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" formControlName="isDigital">
+        <label class="form-check-label" for="flexCheckDefault">
+          Digital
+        </label>
+      </div>
+      <div class="row">
+        <div class="col">
+          <input type="text" class="form-control" autocomplete="off" placeholder="Nombre" id="name"
+            formControlName="name">
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" autocomplete="off" placeholder="Apellido" id="lastname"
+            formControlName="lastName">
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-6">
+          <label class="p-2 text-muted">Diezmo</label>
+        </div>
+        <div class="col">
+          <input type="number" class="form-control" placeholder="$000" id="diezmo" formControlName="tithe">
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-6">
+          <label class="p-2 text-muted">Ofrenda</label>
+        </div>
+        <div class="col">
+          <input type="number" class="form-control" placeholder="$000" id="ofrenda" formControlName="offering">
+        </div>
+      </div>
     </div>
-    <div class="row">
-      <div class="col">
-        <input type="text" class="form-control" autocomplete="off" placeholder="Nombre" id="name" formControlName="name">
-      </div>
-      <div class="col">
-        <input type="text" class="form-control" autocomplete="off" placeholder="Apellido" id="lastname" formControlName="lastName">
-      </div>
+    <div>
+      <button class="btn btn-primary mt-3" type="submit" style="float:right" id="submit"
+        (click)="setTicket($event)">Guardar</button>
     </div>
-    <div class="row mt-3">
-      <div class="col-6">
-        <label class="p-2 text-muted">Diezmo</label>
-      </div>
-      <div class="col">
-        <input type="number" class="form-control" placeholder="$000" id="diezmo" formControlName="tithe">
-      </div>
-    </div>
-    <div class="row mt-3">
-      <div class="col-6">
-        <label class="p-2 text-muted">Ofrenda</label>
-      </div>
-      <div class="col">
-        <input type="number" class="form-control" placeholder="$000" id="ofrenda" formControlName="offering">
-      </div>
-    </div>
-    <button class="btn btn-primary mt-3" type="submit" style="float:right" id="submit" (click)="setTicket($event)">Guardar</button>
   </form>
 </div>
-

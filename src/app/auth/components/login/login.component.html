@@ -1,22 +1,17 @@
-<div class="custom__modal login">
+<div class="custom__modal login p-4">
   <form class="text-center" [formGroup]="loginForm">
     <div class="form-group">
-      <input  autocomplete="off"
-              class="form-control mt-3"
-              aria-describedby="emailHelp"
-              placeholder="Ingrese el usuario"
-              formControlName="user">
+      <input autocomplete="off" autofill="off" class="form-control mt-3" aria-describedby="emailHelp"
+        placeholder="Ingrese el usuario" formControlName="user">
       <div *ngIf="error.user !== ''" class="text-danger">
-        <span  >{{ error.user | lowercase }}</span>
+        <span>{{ error.user | lowercase }}</span>
       </div>
     </div>
     <div class="form-group mt-3">
-      <input  type="password"
-              class="form-control"
-              placeholder="Contraseña"
-              formControlName="password">
+      <input type="password" class="form-control" placeholder="Contraseña" formControlName="password" autocomplete="off"
+        autofill="off">
       <div *ngIf="error.password !== ''" class="text-danger">
-        <span  >{{ error.password }}</span>
+        <span>{{ error.password }}</span>
       </div>
     </div>
     <button type="submit" class="btn btn-primary mt-3" id="login" (click)="login($event)">Ingresar</button>

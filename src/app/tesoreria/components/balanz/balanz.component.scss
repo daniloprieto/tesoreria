@@ -1,9 +1,18 @@
 @import '../../../../styles.scss';
 
+.reports{
+  @extend .custom__modal;
+  margin:3%;
+  padding:3%;
+  max-height: 60vh;
+  display: grid;
+  grid-template-rows: 90% auto;
+}
 
 .mat-table {
   overflow-x: scroll;
   max-width: 99%;
+  max-height: 100%;
 }
 
 .mat-cell,
