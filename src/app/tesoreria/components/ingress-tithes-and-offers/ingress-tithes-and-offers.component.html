@@ -1,5 +1,21 @@
 <div class="container">
-  <form [formGroup]="ticketForm">
+  <!--prueba-->
+  <strong>Status: {{status}}</strong>
+  <div>
+    <input [(ngModel)]="ip" type="text" name="ip" placeholder="IP of printer with WebPRNT">
+    <button (click)="connectToWebPrint()">Connect to WebPRNT</button>
+  </div>
+
+  <div>
+    <button (click)="requestUsb()">Connect to USB</button>
+  </div>
+
+  <div>
+    <button (click)="print()" [disabled]="status === false"> Print!</button>
+  </div>
+  <!--prueba end-->
+
+  <!-- <form [formGroup]="ticketForm">
     <div>
       <div class="form-check mt-2 mb-2">
         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" formControlName="isDigital">
@@ -38,5 +54,5 @@
       <button class="btn btn-primary mt-3" type="submit" style="float:right" id="submit"
         (click)="setTicket($event)">Guardar</button>
     </div>
-  </form>
+  </form> -->
 </div>
