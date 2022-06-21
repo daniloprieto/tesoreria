@@ -7,6 +7,10 @@
   "newProjectRoot": "projects",
   "projects": {
     "gilgal": {
+      "i18n": {
+        "sourceLocale":"es-ES",
+        "locales":{"pt-BR":"src/locale/messages.pt.xlf"}
+      },
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -23,6 +27,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "localize":["pt-BR"],
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",

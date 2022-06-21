@@ -9,7 +9,7 @@ import { HelpersService, TYPE, STATUS } from './helpers.service';
 })
 export class PrintService {
 
-  public versicle = `<p>
+  public versicle = $localize `<p>
     Traed todos los diezmos
     y probadme ahora en esto,
     dice Johová...
@@ -21,14 +21,14 @@ export class PrintService {
     </p>
     `;
 
-  public disclaimer = `<hr>
+  public disclaimer = $localize `<hr>
     Este comprobante es solamente
     para control interno de tesorería
     y no corresponde a pago, cuota
     social o similar.
     <hr>`;
 
-  public disclaimerSign = `
+  public disclaimerSign = $localize `
     Quien firma como dador reconoce <br>
     que da voluntariamente y por fé <br>
     <br><br><br>
@@ -65,22 +65,22 @@ export class PrintService {
       if (ticket.digital > 0) info.digital = ticket.digital;
     })
 
-    let diezmoMessage = info.titheAmount > 0 ? `$ ${info.titheAmount} (pesos) <br> en caracter de diezmo` : '';
-    let ofrendaMessage = info.offeringAmount > 0 ? `$ ${info.offeringAmount} (pesos) <br> en caracter de ofrenda` : '';
+    let diezmoMessage = info.titheAmount > 0 ? $localize `$ ${info.titheAmount} (pesos) <br> en caracter de diezmo` : '';
+    let ofrendaMessage = info.offeringAmount > 0 ? $localize `$ ${info.offeringAmount} (pesos) <br> en caracter de ofrenda` : '';
 
     let controlLine = '<span style="font-size:10px">Ticket Nº:' + ids + ' ';
-    let controlData = info.digital > 0 ? controlLine + 'Digital' : controlLine + 'Efectivo';
+    let controlData = info.digital > 0 ? controlLine + 'Digital' : controlLine + $localize `Efectivo`;
 
     let leafDesign = [
       '<html lang="es"><body style="font-family: monospace, monospace !important;font-size:14px !important">',
       controlData,
       '<div style="width:250px">',
-      '<h5>Iglesia Centro de Adoración Gilgal</h5>',
-      '<span>Recibimos del sr/a: <br>' + info.name + ' ' + info.lastName + '</span><br>',
-      '<span>la suma de: </span><br>',
+      '<h5>'+ $localize `Iglesia Centro de Adoración Gilgal` + '</h5>',
+      '<span>'+ $localize `Recibimos del sr/a: ` + '<br>' + info.name + ' ' + info.lastName + '</span><br>',
+      '<span>' + $localize `la suma de: `+ '</span><br>',
       '<span>' + diezmoMessage + '</span><br>',
       '<span>' + ofrendaMessage + '</span><br>',
-      '<br><span> Tesorero ' + this.user.name + '</span><br><br>',
+      '<br><span>' + $localize `Tesorero ${this.user.name} ${this.user.lastName}` + '</span><br><br>',
       '<div style="border:1px solid black; border-radius:15px;padding:5px">' + this.versicle + '</div><br>',
       '<div>'+ this.disclaimer +'</div><br>',
       '<span>'+ this.disclaimerSign +'</span>',
@@ -99,16 +99,16 @@ export class PrintService {
     const { id, digital, amount, description } = ticket;
 
     let controlLine = '<span style="font-size:10px">Ticket Nº:' + id + ' ';
-    let controlData = digital > 0 ? controlLine + 'Ingreso Digital' : controlLine + 'Ingreso Efectivo';
+    let controlData = digital > 0 ? controlLine + $localize `Ingreso Digital` : controlLine + $localize `Ingreso Efectivo`;
 
     let leafDesign = [
       '<html lang="es"><body style="font-family: monospace, monospace !important;font-size:14px !important">',
       controlData,
       '<div style="width:250px">',
-      '<h5>Iglesia Centro de Adoración Gilgal</h5>',
-      '<span>Recibimos la suma de: <br>$' + amount + '</span><br>',
-      '<span>en concepto de: <br>' + description + '</span><br>',
-      '<br><span> Tesorero ' + this.user.name + '</span><br><br>',
+      '<h5>'+$localize `Iglesia Centro de Adoración Gilgal`+'</h5>',
+      '<span>'+$localize `Recibimos la suma de: `+'<br>$' + amount + '</span><br>',
+      '<span>' + $localize `en concepto de: `+ '<br>' + description + '</span><br>',
+      '<br><span>' + $localize `Tesorero ${this.user.name} ${this.user.lastName}` + '</span><br><br>',
       '<div>'+ this.disclaimer +'</div><br>',
       '</div>',
       '</body></html>'
@@ -132,10 +132,10 @@ export class PrintService {
       '<html lang="es"><body style="font-family: monospace, monospace !important;font-size:14px !important">',
       controlData,
       '<div style="width:250px">',
-      '<h5>Iglesia Centro de Adoración Gilgal</h5>',
-      '<span>Se entrega la suma de: <br>$' + amount + '</span><br>',
-      '<span>en concepto de: <br>' + description + '</span><br>',
-      '<br><span> Tesorero ' + this.user.name + '</span><br><br>',
+      '<h5>' + $localize `Iglesia Centro de Adoración Gilgal`+ '</h5>',
+      '<span>' + $localize `Se entrega la suma de: `+'<br>$' + amount + '</span><br>',
+      '<span>' + $localize `en concepto de: `+'<br>' + description + '</span><br>',
+      '<br><span>'+$localize `Tesorero ${this.user.name} ${this.user.lastName}` + '</span><br><br>',
       '<div>'+ this.disclaimer +'</div><br>',
       '</div>',
       '</body></html>'
@@ -205,16 +205,16 @@ export class PrintService {
 
       switch (type) {
         case TYPE.TITHE:
-          selected = 'Diezmos';
+          selected = $localize `Diezmos`;
           break;
         case TYPE.OFFERING:
-          selected = 'Ofrendas';
+          selected = $localize `Ofrendas`;
           break;
         case TYPE.INGRESS:
-          selected = 'Otros Ingresos';
+          selected = $localize `Otros Ingresos`;
           break;
         case TYPE.EGRESS:
-          selected = 'Egresos';
+          selected = $localize `Egresos`;
           break;
       };
 
@@ -222,9 +222,9 @@ export class PrintService {
         '<table><tr style="font-family: monospace, monospace !important;font-size:12px !important">',
         '<th style="border: 0.5px solid black">Nº</th>',
         '<th style="border: 0.5px solid black">T</th>',
-        '<th style="border: 0.5px solid black">Nombre</th>',
+        '<th style="border: 0.5px solid black">' + $localize `Nombre`+'</th>',
         '<th style="border: 0.5px solid black">' + selected + '</th>',
-        '<th style="border: 0.5px solid black">Tesorero</th></tr>'
+        '<th style="border: 0.5px solid black">' + $localize `Tesorero` + '</th></tr>'
       ];
 
       tickets.map((ticket) => {
@@ -272,7 +272,7 @@ export class PrintService {
       let model = [
         '<html><body style="font-family: monospace, monospace !important;font-size:12px !important">',
         '<div style="width:250px">',
-        '<h5>Iglesia Centro de Adoración Gilgal</h5><br>',
+        '<h5>' + $localize `Iglesia Centro de Adoración Gilgal` + '</h5><br>',
         '<span>Reporte ' + dateLocal + '</span><br><br>',
       ];
 
@@ -288,31 +288,31 @@ export class PrintService {
       let tableTotals = [
         '<table style="max-width:280px">',
         '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
-        '<th style="border: 0.5px solid black">(Totales)</th>',
-        '<th style="border: 0.5px solid black">Efectivo</th>',
-        '<th style="border: 0.5px solid black">Digital</th>',
-        '<th style="border: 0.5px solid black">Total</th>',
+        '<th style="border: 0.5px solid black">' + $localize `(Totales)` + '</th>',
+        '<th style="border: 0.5px solid black">' + $localize `Efectivo` + '</th>',
+        '<th style="border: 0.5px solid black">' + $localize `Digital` + '</th>',
+        '<th style="border: 0.5px solid black">' + $localize `Total` + '</th>',
         '</tr>',
         '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
-        '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">Diezmos</td>',
+        '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">' + $localize `Diezmos` + '</td>',
         '<td style="text-align:right">$' + totalTithesCash + '</td>',
         '<td style="text-align:right">$' + totalTithesDigital + '</td>',
         '<td style="text-align:right"><strong>$' + (totalTithesCash + totalTithesDigital) + '</strong></td>',
         '</tr>',
         '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
-        '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">Ofrendas</td>',
+        '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">' + $localize `Ofrendas` + '</td>',
         '<td style="text-align:right">$' + totalOfferingsCash + '</td>',
         '<td style="text-align:right">$' + totalOfferingsDigital + '</td>',
         '<td style="text-align:right"><strong>$' + (totalOfferingsCash + totalOfferingsDigital) + '</strong></td>',
         '</tr>',
         '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
-        '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">Otros ingresos</td>',
+        '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">' + $localize `Otros ingresos` + '</td>',
         '<td style="text-align:right">$' + totalIngressCash + '</td>',
         '<td style="text-align:right">$' + totalIngressDigital + '</td>',
         '<td style="text-align:right"><strong>$' + (totalIngressCash + totalIngressDigital) + '</strong></td>',
         '</tr>',
         '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
-        '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">Egresos</td>',
+        '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">' + $localize `Egresos` + '</td>',
         '<td style="text-align:right">$' + totalEgressCash + '</td>',
         '<td style="text-align:right">$' + totalEgressDigital + '</td>',
         '<td style="text-align:right"><strong>$' + (totalEgressCash + totalEgressDigital) + '</strong></td>',
@@ -372,23 +372,23 @@ export class PrintService {
       '<br><br><br>',
       '<table style="max-width:280px">',
       '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
-      '<th style="border: 0.5px solid black">Cierre de Caja</th>',
-      '<th style="border: 0.5px solid black">TOTAL</th>',
+      '<th style="border: 0.5px solid black">' + $localize `Cierre de Caja` + '</th>',
+      '<th style="border: 0.5px solid black">' + $localize `TOTAL` + '</th>',
       '</tr>',
       '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
-      '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">Total Ingresos</td>',
+      '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">' + $localize `Total Ingresos` + '</td>',
       '<td style="text-align:right">$' + totalIngress + '</td>',
       '</tr>',
       '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
-      '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">Caja Iglesia</td>',
+      '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">' + $localize `Caja Iglesia` + '</td>',
       '<td style="text-align:right">$' + headquarterGain + '</td>',
       '</tr>',
       '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
-      '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">Relatorio</td>',
+      '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">' + $localize `Relatorio` + '</td>',
       '<td style="text-align:right">$' + headquarterTithe + '</td>',
       '</tr>',
       '<tr style="font-family: monospace, monospace !important;font-size:12px !important">',
-      '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">Oficio Pastor</td>',
+      '<td style="font-weigth:700;border: 0.5px solid black;font-family: monospace, monospace !important;font-size:12px !important">' + $localize `Oficio Pastor` + '</td>',
       '<td style="text-align:right">$' + pastorGain + '</td>',
       '</tr>',
       '</table>'];

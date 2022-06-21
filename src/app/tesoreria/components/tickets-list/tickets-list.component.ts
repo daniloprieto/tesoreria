@@ -51,7 +51,7 @@ export class TicketsListComponent {
               },
               error: (error) => {
                 console.error(error);
-                this._alert.showAlert('Error al recuperar la lista de tickets');
+                this._alert.showAlert($localize `Error al recuperar la lista de tickets`);
               }
             }
           )

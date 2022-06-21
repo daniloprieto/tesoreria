@@ -1,0 +1,694 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="es-ES" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="5917068474815859079" datatype="html">
+        <source>Ingrese el usuario</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/auth/components/login/login.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="187187500641108332" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{ error.user | lowercase }}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/auth/components/login/login.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/auth/components/login/login.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/modal-delete-ticket/modal-delete-ticket.dialog.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7132730488496169673" datatype="html">
+        <source>Contraseña</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/auth/components/login/login.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5752331855682104921" datatype="html">
+        <source>Ingresar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/auth/components/login/login.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6930413293992413862" datatype="html">
+        <source>No tienes permisos para acceder</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/auth.service.ts</context>
+          <context context-type="linenumber">39</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7389270359783841076" datatype="html">
+        <source>Ocurrió un error al intentar acceder</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/auth.service.ts</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4061358740003746681" datatype="html">
+        <source>&lt;p&gt;
+    Traed todos los diezmos
+    y probadme ahora en esto,
+    dice Johová...
+    Si no abriré las ventanas
+    de los cielos y derramaré
+    bendición hasta que sobreabunde.
+    &lt;br&gt;
+    &lt;span style=&quot;float:right&quot;&gt;Malaquías 3:10&lt;span&gt;
+    &lt;/p&gt;
+    </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">12,22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1311949080464560461" datatype="html">
+        <source>&lt;hr&gt;
+    Este comprobante es solamente
+    para control interno de tesorería
+    y no corresponde a pago, cuota
+    social o similar.
+    &lt;hr&gt;</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">24,29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9050545750313889627" datatype="html">
+        <source>
+    Quien firma como dador reconoce &lt;br&gt;
+    que da voluntariamente y por fé &lt;br&gt;
+    &lt;br&gt;&lt;br&gt;&lt;br&gt;
+    &lt;hr&gt;&lt;br&gt;
+    &lt;span style=&quot;width:100%;text-align:center&quot;&gt;Firma dador&lt;/span&gt;
+    </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">31,37</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6222090455632653607" datatype="html">
+        <source>$ <x id="PH" equiv-text="info.titheAmount"/> (pesos) &lt;br&gt; en caracter de diezmo</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1176948594772925445" datatype="html">
+        <source>$ <x id="PH" equiv-text="info.offeringAmount"/> (pesos) &lt;br&gt; en caracter de ofrenda</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">69</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5006302505272182179" datatype="html">
+        <source>Efectivo</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">72</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">292</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6545299148250486965" datatype="html">
+        <source>Iglesia Centro de Adoración Gilgal</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">78</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">108</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">135</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">275</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6535969690146493974" datatype="html">
+        <source>Recibimos del sr/a: </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">79</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4351757499108648922" datatype="html">
+        <source>la suma de: </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">80</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7455353929610332793" datatype="html">
+        <source>Tesorero</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">83</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">111</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">138</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">227</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7821503731496684214" datatype="html">
+        <source>Ingreso Digital</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">102</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5869172596295971182" datatype="html">
+        <source>Ingreso Efectivo</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">102</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4090436604656220881" datatype="html">
+        <source>Recibimos la suma de: </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">109</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3532200176713144638" datatype="html">
+        <source>en concepto de: </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">110</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">137</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4901807517042656282" datatype="html">
+        <source>Se entrega la suma de: </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">136</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2352092558757552649" datatype="html">
+        <source>Diezmos</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">208</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">297</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6965051444382379067" datatype="html">
+        <source>Ofrendas</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">211</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">303</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8328918598275992114" datatype="html">
+        <source>Otros Ingresos</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">214</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7289976848029788109" datatype="html">
+        <source>Egresos</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">217</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">315</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5357661269973482487" datatype="html">
+        <source>Nombre</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">225</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/ingress-tithes-and-offers/ingress-tithes-and-offers.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6088402750456473969" datatype="html">
+        <source>(Totales)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">291</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="212780233414497477" datatype="html">
+        <source>Digital</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">293</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/egress/egress.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/ingress-tithes-and-offers/ingress-tithes-and-offers.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/ingress/ingress.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3448462145758383019" datatype="html">
+        <source>Total</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">294</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3310836886654440817" datatype="html">
+        <source>Otros ingresos</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">309</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4930083802021088235" datatype="html">
+        <source>Cierre de Caja</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">375</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/reports/reports.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6684016449595758284" datatype="html">
+        <source>TOTAL</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">376</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2469376899327054951" datatype="html">
+        <source>Total Ingresos</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">379</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7060089538081466282" datatype="html">
+        <source>Caja Iglesia</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">383</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8081318139996297410" datatype="html">
+        <source>Relatorio</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">387</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5995295239135020113" datatype="html">
+        <source>Oficio Pastor</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/print.service.ts</context>
+          <context context-type="linenumber">391</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5882283747723100751" datatype="html">
+        <source>Diezmo Iglesia <x id="PH" equiv-text="this.user.headquarter"/> <x id="PH_1" equiv-text="this._helpers.dateEsStr()"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/ticket.service.ts</context>
+          <context context-type="linenumber">159</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8642412273720416041" datatype="html">
+        <source>Oficio del pastor <x id="PH" equiv-text="this.user.headquarter"/> <x id="PH_1" equiv-text="this._helpers.dateEsStr()"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/ticket.service.ts</context>
+          <context context-type="linenumber">164</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="497827475881275460" datatype="html">
+        <source>Diezmo del pastor <x id="PH" equiv-text="this.user.headquarter"/> <x id="PH_1" equiv-text="this._helpers.dateEsStr()"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/ticket.service.ts</context>
+          <context context-type="linenumber">170</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8294859789022685381" datatype="html">
+        <source> Nombre </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/atoms/tables/tickets-table/tickets-table.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5930897191700215736" datatype="html">
+        <source> Tipo </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/atoms/tables/tickets-table/tickets-table.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5915287617703658226" datatype="html">
+        <source> Total </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/atoms/tables/tickets-table/tickets-table.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8182286214125662521" datatype="html">
+        <source> Monto </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/atoms/tables/tickets-table/tickets-table.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5030661329539421997" datatype="html">
+        <source>Anulado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/atoms/tables/tickets-table/tickets-table.component.html</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5024526295234929668" datatype="html">
+        <source>No es posible anular el ticklet Nº<x id="PH" equiv-text="ticket.id"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/atoms/tables/tickets-table/tickets-table.component.ts</context>
+          <context context-type="linenumber">71</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9084885127601930456" datatype="html">
+        <source>logo</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/header/header.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3647609693252439061" datatype="html">
+        <source>Va a cerrar la sesión</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/header/header.component.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3484084081322061447" datatype="html">
+        <source>Error al recuperar la lista de tickets</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/balanz/balanz.component.ts</context>
+          <context context-type="linenumber">61</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/tickets-list/tickets-list.component.ts</context>
+          <context context-type="linenumber">54</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6632260050490870334" datatype="html">
+        <source>Diezmos / ofrendas</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/dashboard-live/dashboard-live.component.html</context>
+          <context context-type="linenumber">8,9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1076988773126325327" datatype="html">
+        <source>Ingreso</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/dashboard-live/dashboard-live.component.html</context>
+          <context context-type="linenumber">11,12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1203502010321789394" datatype="html">
+        <source>Egreso</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/dashboard-live/dashboard-live.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7341573395859226797" datatype="html">
+        <source>Detalle</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/egress/egress.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/ingress/ingress.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9153757702882557229" datatype="html">
+        <source>Descripción del ingreso</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/egress/egress.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/ingress/ingress.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="803996154952073575" datatype="html">
+        <source>Monto</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/egress/egress.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/ingress/ingress.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1372173599787735409" datatype="html">
+        <source>Guardar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/egress/egress.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/ingress-tithes-and-offers/ingress-tithes-and-offers.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/ingress/ingress.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7547995209692121157" datatype="html">
+        <source>Debe ingresar al menos un valor</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/egress/egress.component.ts</context>
+          <context context-type="linenumber">63</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/ingress-tithes-and-offers/ingress-tithes-and-offers.component.ts</context>
+          <context context-type="linenumber">76</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/ingress/ingress.component.ts</context>
+          <context context-type="linenumber">62</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3403736606137762833" datatype="html">
+        <source>Debe ingresar una descripción</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/egress/egress.component.ts</context>
+          <context context-type="linenumber">66</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/ingress/ingress.component.ts</context>
+          <context context-type="linenumber">65</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3774257226227615166" datatype="html">
+        <source>Error al guardar el Ticket</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/egress/egress.component.ts</context>
+          <context context-type="linenumber">82</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/ingress-tithes-and-offers/ingress-tithes-and-offers.component.ts</context>
+          <context context-type="linenumber">126</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/ingress/ingress.component.ts</context>
+          <context context-type="linenumber">81</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6121280062403357056" datatype="html">
+        <source>Apellido</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/ingress-tithes-and-offers/ingress-tithes-and-offers.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9082884920686835617" datatype="html">
+        <source>Diezmo</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/ingress-tithes-and-offers/ingress-tithes-and-offers.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4797761556169342825" datatype="html">
+        <source>Ofrenda</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/ingress-tithes-and-offers/ingress-tithes-and-offers.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7366079103047818812" datatype="html">
+        <source>Debe ingresar nombre y apellido</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/ingress-tithes-and-offers/ingress-tithes-and-offers.component.ts</context>
+          <context context-type="linenumber">62</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3548946351212301260" datatype="html">
+        <source>Cierre de caja <x id="INTERPOLATION" equiv-text="{{ data.tickets[0].createdAt | date }}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/modal-balanz-details/modal-balanz-details.dialog.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2580248053182586375" datatype="html">
+        <source> Salir </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/modal-balanz-details/modal-balanz-details.dialog.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4874035106057520098" datatype="html">
+        <source>Anular Ticket Nº <x id="INTERPOLATION" equiv-text="{{data.ticket.id}}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/modal-delete-ticket/modal-delete-ticket.dialog.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5988527754735881488" datatype="html">
+        <source>Nombre:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/modal-delete-ticket/modal-delete-ticket.dialog.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1395022319740174102" datatype="html">
+        <source>Tipo:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/modal-delete-ticket/modal-delete-ticket.dialog.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3179867531877723547" datatype="html">
+        <source>Digital:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/modal-delete-ticket/modal-delete-ticket.dialog.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5478257435539101115" datatype="html">
+        <source>Monto:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/modal-delete-ticket/modal-delete-ticket.dialog.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8276412775227537040" datatype="html">
+        <source>Tesorero:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/modal-delete-ticket/modal-delete-ticket.dialog.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2444499384194106860" datatype="html">
+        <source>Fecha:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/modal-delete-ticket/modal-delete-ticket.dialog.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6060080757060540228" datatype="html">
+        <source> Cancelar </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/modal-delete-ticket/modal-delete-ticket.dialog.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1794270321810786392" datatype="html">
+        <source> Anular </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/modal-delete-ticket/modal-delete-ticket.dialog.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8922056105159182968" datatype="html">
+        <source>Balances</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/reports/reports.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5378910244338134614" datatype="html">
+        <source>Imprimir Reporte</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/reports/reports.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2344713054200243218" datatype="html">
+        <source>No hay datos para imprimir</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/reports/reports.component.ts</context>
+          <context context-type="linenumber">59</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/reports/reports.component.ts</context>
+          <context context-type="linenumber">64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3468673856761594768" datatype="html">
+        <source>Va a cerra la caja </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/reports/reports.component.ts</context>
+          <context context-type="linenumber">76</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5606340596639358802" datatype="html">
+        <source>Sin transacciones</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tesoreria/components/tickets-list/tickets-list.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

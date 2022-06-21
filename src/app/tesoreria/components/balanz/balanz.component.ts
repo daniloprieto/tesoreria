@@ -58,7 +58,7 @@ export class BalanzComponent implements OnInit {
               next: (tickets) => { if(tickets.length > 0) this.openPopup(tickets)},
               error: (error) => {
                 console.error(error);
-                this._alert.showAlert('Error al recuperar la lista de tickets');
+                this._alert.showAlert($localize `Error al recuperar la lista de tickets`);
               }
             }
           )

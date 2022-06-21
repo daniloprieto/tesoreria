@@ -36,10 +36,10 @@ export class AuthService {
               this.user.next(userData);
               this._router.navigate(['']);
             } else {
-              this._alert.showAlert('No tienes permisos para acceder')
+              this._alert.showAlert($localize `No tienes permisos para acceder`)
             }
           },
-          error: (error) => this._alert.showAlert('Ocurrió un error al intentar acceder')
+          error: (error) => this._alert.showAlert($localize `Ocurrió un error al intentar acceder`)
         })
       )
       .subscribe()

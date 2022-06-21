@@ -156,18 +156,18 @@ export class TicketService {
     let cashClosingTickets: TicketBase[] = [
       {
         ...data,
-        description: 'Diezmo Iglesia ' + this.user.headquarter + ' ' + this._helpers.dateEsStr(),
+        description: $localize `Diezmo Iglesia ${this.user.headquarter} ${this._helpers.dateEsStr()}`,
         amount: headquarterTithe,
       },
       {
         ...data,
-        description: 'Oficio del pastor ' + this.user.headquarter + ' ' + this._helpers.dateEsStr(),
+        description: $localize `Oficio del pastor ${this.user.headquarter} ${ this._helpers.dateEsStr() }`,
         amount: pastorService,
       },
       {
         ...data,
         status: STATUS.CLOSED,
-        description: 'Diezmo del pastor ' + this.user.headquarter + ' ' + this._helpers.dateEsStr(),
+        description: $localize `Diezmo del pastor ${this.user.headquarter} ${this._helpers.dateEsStr()}`,
         amount: pastorTithe,
         type: TYPE.INGRESS,
       }

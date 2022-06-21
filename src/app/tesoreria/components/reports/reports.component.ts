@@ -56,12 +56,12 @@ export class ReportsComponent implements OnInit {
 
             } else {
 
-              this._alert.showAlert('No hay datos para imprimir')
+              this._alert.showAlert($localize `No hay datos para imprimir`)
 
             }
           },
           error: (error) => {
-            this._alert.showAlert('No hay datos para imprimir');
+            this._alert.showAlert($localize `No hay datos para imprimir`);
             console.error(error);
           }
       })
@@ -73,7 +73,7 @@ export class ReportsComponent implements OnInit {
 
   cashClosingReport(event: any) {
     event.preventDefault();
-    if (confirm("Va a cerra la caja ")) {
+    if (confirm($localize `Va a cerra la caja `)) {
       this._ticket.cashClosing();
     }
   }

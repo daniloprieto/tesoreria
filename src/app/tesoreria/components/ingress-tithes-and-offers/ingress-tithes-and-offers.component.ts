@@ -59,7 +59,7 @@ export class IngressTithesAndOffersComponent implements OnInit {
 
     if (form.invalid) {
 
-      this._alert.showAlert('Debe ingresar nombre y apellido');
+      this._alert.showAlert($localize `Debe ingresar nombre y apellido`);
 
     } else {
 
@@ -73,7 +73,7 @@ export class IngressTithesAndOffersComponent implements OnInit {
 
       if (form.get('tithe')?.value <= 0 && form.get('offering')?.value <= 0) {
 
-        this._alert.showAlert('Debe ingresar al menos un valor');
+        this._alert.showAlert($localize `Debe ingresar al menos un valor`);
 
       } else {
 
@@ -123,7 +123,7 @@ export class IngressTithesAndOffersComponent implements OnInit {
                 }
               },
               error: (error) => {
-                this._alert.showAlert('Error al guardar el Ticket');
+                this._alert.showAlert($localize `Error al guardar el Ticket`);
                 console.error(error);
               }
             })

@@ -18,7 +18,7 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    if (confirm("Va a cerrar la sesión")) {
+    if (confirm($localize `Va a cerrar la sesión`)) {
       this._auth.logout();
     }
   }

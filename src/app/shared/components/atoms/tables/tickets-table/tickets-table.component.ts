@@ -68,7 +68,7 @@ export class TicketsTableComponent implements OnInit {
           {
             error: (error) => {
               console.error(error);
-              this._alert.showAlert('No es posible anular el ticklet Nº' + ticket.id);
+              this._alert.showAlert($localize `No es posible anular el ticklet Nº${ticket.id}`);
             }
           }
         )

@@ -1,30 +1,30 @@
-<h1 mat-dialog-title>Anular Ticket Nº {{data.ticket.id}}</h1>
+<h1 mat-dialog-title i18n>Anular Ticket Nº {{data.ticket.id}}</h1>
 
 <mat-dialog-content>
 
   <table class="table table-striped">
     <tr>
-      <td colspan="2" class="table-active">Nombre:</td>
+      <td colspan="2" class="table-active" i18n>Nombre:</td>
       <td>{{data.ticket.name + ' ' + data.ticket.lastName}}</td>
     </tr>
     <tr>
-      <td colspan="2" class="table-active">Tipo:</td>
+      <td colspan="2" class="table-active" i18n>Tipo:</td>
       <td>{{getType(data.ticket.type)}}</td>
     </tr>
     <tr>
-      <td colspan="2" class="table-active">Digital:</td>
-      <td>{{data.ticket.digital ? 'SI':'NO'}}</td>
+      <td colspan="2" class="table-active" i18n>Digital:</td>
+      <td i18n>{{data.ticket.digital ? 'SI':'NO'}}</td>
     </tr>
     <tr>
-      <td colspan="2" class="table-active">Monto:</td>
+      <td colspan="2" class="table-active" i18n>Monto:</td>
       <td>${{data.ticket.amount}}</td>
     </tr>
     <tr>
-      <td colspan="2" class="table-active">Tesorero:</td>
+      <td colspan="2" class="table-active" i18n>Tesorero:</td>
       <td>{{data.ticket.treasurer}}</td>
     </tr>
     <tr>
-      <td colspan="2" class="table-active">Fecha:</td>
+      <td colspan="2" class="table-active" i18n>Fecha:</td>
       <td>{{data.ticket.createdAt}}</td>
     </tr>
   </table>
@@ -32,6 +32,6 @@
 </mat-dialog-content>
 
 <mat-dialog-actions  align = "end">
-  <button  mat-button  mat-dialog-close> Cancelar </button>
-  <button  mat-button [mat-dialog-close]="true"  cdkFocusInitial> Anular </button>
+  <button  mat-button  mat-dialog-close i18n> Cancelar </button>
+  <button  mat-button [mat-dialog-close]="true"  cdkFocusInitial i18n> Anular </button>
 </mat-dialog-actions>

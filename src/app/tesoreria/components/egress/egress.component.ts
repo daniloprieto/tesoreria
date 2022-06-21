@@ -60,10 +60,10 @@ export class EgressComponent implements OnInit {
         this.saveTicket(ticket);
 
       } else {
-          this._alert.showAlert('Debe ingresar al menos un valor');
+          this._alert.showAlert($localize `Debe ingresar al menos un valor`);
       }
     } else {
-      this._alert.showAlert('Debe ingresar una descripción');
+      this._alert.showAlert($localize `Debe ingresar una descripción`);
     }
 
   }
@@ -79,7 +79,7 @@ export class EgressComponent implements OnInit {
               if (this._print.print('designTicketEgress', ticket)) this.reset();
             },
             error: (error) => {
-              this._alert.showAlert('Error al guardar el Ticket');
+              this._alert.showAlert($localize `Error al guardar el Ticket`);
               console.error(error);
             }
           }
