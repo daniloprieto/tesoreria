@@ -4,7 +4,7 @@ import { FormControl } from '@angular/forms';
 import { TicketService } from '../../../core/services/ticket.service';
 import { PrintService } from '../../../core/services/print.service';
 import { AlertService } from '../../../core/services/alert.service';
-import { Subscription, tap } from 'rxjs';
+import { BehaviorSubject, filter, Subscription, tap } from 'rxjs';
 
 @Component({
   selector: 'app-reports',
@@ -15,7 +15,7 @@ export class ReportsComponent implements OnInit {
   public todayEn!: string;
   public todayEs!: string;
   public selectedDate = new FormControl();
-  public availableCashClosing = false;
+  public availableCashClosing = new BehaviorSubject<boolean>(false);
   private _sub$: Subscription[] = [];
 
   constructor(
@@ -34,8 +34,12 @@ export class ReportsComponent implements OnInit {
 
   getTicketsToday() {
     this._sub$.push(
-      this._ticket.ticketsToday$
-        .subscribe(tickets => this.availableCashClosing = tickets.length > 0 ? true : false)
+      this._ticket.activeTicketsToday$
+        .subscribe(tickets => {
+          console.log('tickets', tickets.length);
+          console.log('tickets', tickets);
+          this.availableCashClosing.next(tickets.length > 0 ? true : false)
+        })
     );
   }
 
@@ -74,12 +78,19 @@ export class ReportsComponent implements OnInit {
   cashClosingReport(event: any) {
     event.preventDefault();
     if (confirm("Va a cerra la caja ")) {
-      this._ticket.cashClosing();
+      this._sub$.push(
+        this._ticket.cashClosing()
+        .pipe(
+          filter(r => r === false),
+          tap(() => this.getTicketsToday())
+        )
+        .subscribe()
+      );
     }
   }
 
   ngOnDestroy(): void {
-    this._sub$.map((sub) => sub.unsubscribe());
+    this._sub$.forEach((sub) => sub.unsubscribe());
   }
 
 }
