@@ -28,9 +28,13 @@ export class BalanzComponent implements OnInit {
   ngOnInit(): void {
     this._tickets.getCashClosingReports().subscribe(
       (reports) => {
-        this.reports = reports;
+        this.reports = reports.sort((a, b) => {
+          const idA = a?.id ?? 0; // Si a.id es undefined, usa 0 como valor predeterminado
+          const idB = b?.id ?? 0; // Si b.id es undefined, usa 0 como valor predeterminado
+          return idB - idA; // Ordenar de mayor a menor
+        });
       }
-    )
+    );
   }
 
   getDate(d:any): string {

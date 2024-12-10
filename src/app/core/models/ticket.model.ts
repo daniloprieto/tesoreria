@@ -2,8 +2,8 @@
 export interface TicketBase{
   id?: number,
   status?: number,
-  name: string,
-  lastName: string,
+  name?: string,
+  lastName?: string,
   description?: string,
   amount: number,
   type: string,

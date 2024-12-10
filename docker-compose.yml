@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  angular:
+    image: node:16
+    container_name: angular-app
+    working_dir: /app
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "4300:4200"
+    command: sh -c "npm install --legacy-peer-deps && npm start -- --host 0.0.0.0"
+    environment:
+      - CHOKIDAR_USEPOLLING=true

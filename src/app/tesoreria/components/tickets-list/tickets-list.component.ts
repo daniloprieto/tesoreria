@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input,OnInit } from '@angular/core';
 import { tap, BehaviorSubject, Subscription, distinct } from 'rxjs';
 import { Ticket } from 'src/app/core/models/ticket.model';
 import { User } from 'src/app/core/models/user.model';
@@ -19,6 +19,7 @@ export interface Transaction {
   styleUrls: ['./tickets-list.component.scss']
 })
 
+
 export class TicketsListComponent {
   @Input() user!: User;
   public tickets: Ticket[] = [];
@@ -34,6 +35,10 @@ export class TicketsListComponent {
   ) {
     this.retrieveTickets();
     this.todayEn = this._helpers.dateEnStr();
+  }
+
+  ngOnInit(): void {
+    this.retrieveTickets();
   }
 
   retrieveTickets(date: any = this.todayEn) {
