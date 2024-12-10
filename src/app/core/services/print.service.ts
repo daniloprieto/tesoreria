@@ -60,8 +60,8 @@ export class PrintService {
       if (ticket.type === TYPE.TITHE) info.titheAmount = ticket.amount;
       if (ticket.type === TYPE.OFFERING) info.offeringAmount = ticket.amount;
       ids.push(ticket.id!);
-      info.name = ticket.name;
-      info.lastName = ticket.lastName;
+      info.name = ticket.name ? ticket.name : '';
+      info.lastName = ticket.lastName ? ticket.lastName : '';
       if (ticket.digital > 0) info.digital = ticket.digital;
     })
 
@@ -240,13 +240,16 @@ export class PrintService {
 
     function createRow(ticket: Ticket): string[]{
 
-      const { id, name:nameSrc, lastName, digital:digitalSrc, amount, treasurer } = ticket;
+      const { id, name, lastName, digital:digitalSrc, amount, treasurer } = ticket;
 
       let digital = digitalSrc > 0 ? 'D' : 'E';
+      
+      const nameSrc = name ? name : '';
+      const lastNameSrc = lastName ? lastName : '';
 
 
       let text = ticket.type === TYPE.OFFERING || ticket.type === TYPE.OFFERING
-        ? nameSrc.slice(0, 1) + '. ' + (lastName.length > 6 ? (lastName.slice(0, 5) + '.') : lastName)
+        ? nameSrc.slice(0, 1) + '. ' + (lastNameSrc.length > 6 ? (lastNameSrc.slice(0, 5) + '.') : lastName)
         : ticket.description?.slice(0, 5);
 
       let rowDesign = [
